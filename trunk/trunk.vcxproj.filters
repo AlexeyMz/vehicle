@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{bd1e5b92-f178-488c-a5d0-6302d5269218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\decimal for cpp">
+      <UniqueIdentifier>{0b07e611-0ec4-4e46-9273-6ed71027c6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Модель данных">
+      <UniqueIdentifier>{6a50e878-ab3e-45db-aa23-253bc5976802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{567a9f55-c916-416f-aa27-9b385cb48433}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="datamodel\AndOrTree.hpp">
+      <Filter>Модель данных</Filter>
+    </ClInclude>
+    <ClInclude Include="datamodel\Node.hpp">
+      <Filter>Модель данных</Filter>
+    </ClInclude>
+    <ClInclude Include="datamodel\SolutionIterator.hpp">
+      <Filter>Модель данных</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\decimal_for_cpp\decimal.h">
+      <Filter>libs\decimal for cpp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
