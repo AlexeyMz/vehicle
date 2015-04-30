@@ -109,7 +109,7 @@ namespace vehicle {
             enum Switch { None, Success, Overflow };
 
             bool hasChoice(const node_t *node) {
-                return node->getKind() == NodeKind::or && !node->isLeaf();
+                return node->getKind() == NodeKind::OR && !node->isLeaf();
             }
 
             solution_node_t * deepCloneNodeForSolution(const node_t *node) {
@@ -175,11 +175,11 @@ namespace vehicle {
                         auto choosen = node->child(choice.index);
                         choice.power = choosen->getValue().power;
                     } else {
-                        choice.power = std::accumulate(node->begin(), node->end(), 0,
+                        choice.power = std::accumulate(node->begin(), node->end(), (size_t)0,
                             [] (size_t acc, solution_node_t *n) { return acc + n->getValue().power; });
                     }
                 } else {
-                    choice.power = std::accumulate(node->begin(), node->end(), 1,
+                    choice.power = std::accumulate(node->begin(), node->end(), (size_t)1,
                         [] (size_t acc, solution_node_t *n) { return std::max(acc, n->getValue().power); });
                 }
             }

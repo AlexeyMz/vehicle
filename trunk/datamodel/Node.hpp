@@ -9,9 +9,7 @@ namespace vehicle {
         /**
          * Тип узла И-ИЛИ дерева.
          */
-        namespace NodeKind {
-            enum e { and, or, none };
-        }
+		enum class NodeKind { AND, OR, NONE };
 
         template <typename Key, typename Value>
         class AndOrTree;
@@ -93,13 +91,13 @@ namespace vehicle {
             iterator<true> subtree_end() const { return iterator<true>(nullptr); }
 
             /** Устанавливает тип узла. */
-            void setKind(const NodeKind::e kind) {
+            void setKind(NodeKind kind) {
                 if (this->kind == kind) { return; }
                 this->kind = kind;
                 owner.recomputeKey(this);
             }
             /** Возвращает тип узла. */
-            NodeKind::e getKind() const { return kind; }
+            NodeKind getKind() const { return kind; }
 
             /**
              * Собственный неизменяемый ключ узла.
@@ -152,7 +150,7 @@ namespace vehicle {
              * @see attach(child)
              * @see AndOrTree::create(kind, key, value)
              */
-            Node * append(NodeKind::e kind, const Key &key, const Value &value) {
+            Node * append(NodeKind kind, const Key &key, const Value &value) {
                 return attach(owner.create(kind, key, value));
             }
 
@@ -209,7 +207,7 @@ namespace vehicle {
             }
 
 		private:
-            Node(tree_t &owner, Node *parent, NodeKind::e kind, const Key &key, const Value &value):
+            Node(tree_t &owner, Node *parent, NodeKind kind, const Key &key, const Value &value):
                 owner(owner),
                 parent(parent),
                 kind(kind),
@@ -226,7 +224,7 @@ namespace vehicle {
             /** Родительский узел. */
 			Node *parent;
             /** Тип узла. */
-            NodeKind::e kind;
+            NodeKind kind;
             /** Собственный ключ узла. */
             const Key nodeKey;
             /** Ключ поддерева с корнем в данном узле. */
@@ -254,8 +252,8 @@ namespace vehicle {
         namespace design {
             /** Выводит в поток stream подряд элементы space в количестве size. */
             template <typename Stream, typename Space>
-            Stream & indent(Stream &stream, const Space &space, long size) {
-                for (long i = 0; i < size; i++) { stream << space; }
+            Stream & indent(Stream &stream, const Space &space, size_t size) {
+                for (size_t i = 0; i < size; i++) { stream << space; }
                 return stream;
             }
             /**
@@ -268,12 +266,12 @@ namespace vehicle {
             Stream & closeLevels(
                 Stream &stream,
                 const Space &space,
-                const Closing &closing,
-                long deepLevel,
-                long shallowLevel)
+                Closing closing,
+                size_t deepLevel,
+                size_t shallowLevel)
             {
                 if (deepLevel <= shallowLevel) { return stream; }
-                for (long i = deepLevel - 1; i >= shallowLevel; i--) {
+                for (size_t i = deepLevel - 1; i >= shallowLevel && i-- != 0;) {
                     indent(stream, space, i) << closing;
                 }
                 return stream;
@@ -292,11 +290,11 @@ namespace vehicle {
         }
 
         template <typename Stream>
-        Stream & operator<<(Stream &os, NodeKind::e kind) {
+        Stream & operator<<(Stream &os, NodeKind kind) {
             switch (kind) {
-                case NodeKind::and:  return os << "&&";
-                case NodeKind::or:   return os << "||";
-                case NodeKind::none: return os << "";
+                case NodeKind::AND:  return os << "&&";
+                case NodeKind::OR:   return os << "||";
+                case NodeKind::NONE: return os << "";
                 default:             return os << "??";
             }
         }
@@ -311,7 +309,7 @@ namespace vehicle {
                 design::printNode(os, *current, level);
                 previousLevel = level;
             }
-            design::closeLevels(os, "  ", "]\n", previousLevel, 0);
+            design::closeLevels(os, "  ", "]\n", previousLevel, (size_t)0);
             return os;
         }
 	}

@@ -26,7 +26,7 @@ namespace vehicle {
              *     возвращает минимальную возможную стоимость решения. 
              */
             AndOrTree(std::function<Key (node_t &)> computeKey = &(defaultComputeKey<Key, Value>)):
-                computeKey(computeKey) {}
+                computeKey(computeKey), root(nullptr) {}
 
             AndOrTree(const AndOrTree &source):
                 computeKey(source.computeKey)
@@ -75,7 +75,7 @@ namespace vehicle {
              * @param key неизменяемый ключ узла
              * @param value изменяемое значение узла
              */
-            node_t * create(NodeKind::e kind, const Key &key, const Value &value) {
+            node_t * create(NodeKind kind, const Key &key, const Value &value) {
                 return new node_t(*this, nullptr, kind, key, value);
             }
 
@@ -133,13 +133,13 @@ namespace vehicle {
         Key defaultComputeKey(Node<Key, Value> &node) {
             if (node.isLeaf()) {
                 return node.ownKey();
-            } else if (node.getKind() == NodeKind::and) {
+            } else if (node.getKind() == NodeKind::AND) {
                 Key key = node.ownKey();
                 for (auto child : node) {
                     key = key + child->subtreeKey();
                 }
                 return key;
-            } else if (node.getKind() == NodeKind::or) {
+            } else if (node.getKind() == NodeKind::OR) {
                 Key key = node.child(0)->subtreeKey();
                 for (size_t i = 1; i < node.childCount(); i++) {
                     const Key &childKey = node.child(i)->subtreeKey();
