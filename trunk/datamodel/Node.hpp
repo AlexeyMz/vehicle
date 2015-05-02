@@ -201,6 +201,11 @@ namespace vehicle {
                 return owner.detach(this);
             }
 
+            /** Возвращает родительский узел. */
+            const Node * const getParent() {
+                return parent;
+            }
+
             /** Отсоединяет и удаляет узел. */
             ~Node() {
                 detach();

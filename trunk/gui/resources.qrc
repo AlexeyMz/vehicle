@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/gui">
+        <file>qml/main.qml</file>
+        <file>qml/IconButton.qml</file>
+        <file>qml/SolutionsView.qml</file>
+        <file>qml/ParametersView.qml</file>
+        <file>images/close.png</file>
+    </qresource>
+</RCC>

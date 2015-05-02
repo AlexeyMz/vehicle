@@ -25,6 +25,12 @@
     <Filter Include="GUI">
       <UniqueIdentifier>{567a9f55-c916-416f-aa27-9b385cb48433}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\QML">
+      <UniqueIdentifier>{bba33050-a0d9-488e-bbff-ec0174b66a9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Model-QML Bridge">
+      <UniqueIdentifier>{72550aec-8a6c-480e-8d33-4e57d915c3f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="datamodel\AndOrTree.hpp">
@@ -39,10 +45,56 @@
     <ClInclude Include="libs\decimal_for_cpp\decimal.h">
       <Filter>libs\decimal for cpp</Filter>
     </ClInclude>
+    <ClInclude Include="gui\middleware\nodeitem.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="gui\bridge.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\middleware\parametermodel.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\middleware\solutionmodel.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="temp\moc_bridge.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="temp\moc_parametermodel.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="temp\moc_solutionmodel.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="temp\qrc_resources.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gui\qml\IconButton.qml">
+      <Filter>GUI\QML</Filter>
+    </None>
+    <None Include="gui\qml\main.qml">
+      <Filter>GUI\QML</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="gui\resources.qrc">
+      <Filter>Файлы ресурсов</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\bridge.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\middleware\parametermodel.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\middleware\solutionmodel.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
