@@ -50,7 +50,11 @@ Parameter::Parameter(Parameter* parent, AOTree::node_t* node)
         connect(this, &Parameter::visibilityChanged, [=]()
         {
             if(!visible_)
+            {
                 value_.clear();
+                for(size_t i = 0; i < node_->childCount(); ++i)
+                    node_->child(i)->getValue().setFixed(false);
+            }
         });
     }
 }

@@ -16,7 +16,9 @@ int main(int argc, char** argv)
 #endif
 
     QQmlApplicationEngine engine(&app);
-    ModelQmlBridge bridge(&engine);
+
+    ModelQmlBridge bridge(&app);
+    bridge.initialize(&engine);
 
     engine.load(QUrl("qrc:///gui/qml/main.qml"));
 

@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Заголовочные файлы">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="libs">
       <UniqueIdentifier>{bd1e5b92-f178-488c-a5d0-6302d5269218}</UniqueIdentifier>
     </Filter>
@@ -31,6 +27,12 @@
     <Filter Include="GUI\Model-QML Bridge">
       <UniqueIdentifier>{72550aec-8a6c-480e-8d33-4e57d915c3f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\JS">
+      <UniqueIdentifier>{59512cff-ffae-4f07-a67e-e3852d00e4a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Utils">
+      <UniqueIdentifier>{c018c9ea-12c1-455d-89c1-bcc883d7b593}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="datamodel\AndOrTree.hpp">
@@ -47,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="gui\middleware\nodeitem.h">
       <Filter>GUI\Model-QML Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\utils\xmlparser.h">
+      <Filter>GUI\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +79,9 @@
     <ClCompile Include="temp\qrc_resources.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="gui\utils\xmlparser.cpp">
+      <Filter>GUI\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="gui\qml\IconButton.qml">
@@ -81,6 +89,18 @@
     </None>
     <None Include="gui\qml\main.qml">
       <Filter>GUI\QML</Filter>
+    </None>
+    <None Include="gui\qml\ParametersView.qml">
+      <Filter>GUI\QML</Filter>
+    </None>
+    <None Include="gui\qml\SolutionsView.qml">
+      <Filter>GUI\QML</Filter>
+    </None>
+    <None Include="gui\qml\ToolTip.qml">
+      <Filter>GUI\QML</Filter>
+    </None>
+    <None Include="gui\js\tooltipcreator.js">
+      <Filter>GUI\JS</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -96,5 +116,10 @@
     <CustomBuild Include="gui\middleware\solutionmodel.h">
       <Filter>GUI\Model-QML Bridge</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="data.xml">
+      <Filter>Модель данных</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

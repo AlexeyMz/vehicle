@@ -1,24 +1,13 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.1
-
-// м.б. использовать XmlListModel?
-/*
- XmlListModel {
-     id: feedModel
-     source: "http://rss.news.yahoo.com/rss/oceania"
-     query: "/rss/channel/item"
-     XmlRole { name: "title"; query: "title/string()" }
-     XmlRole { name: "link"; query: "link/string()" }
-     XmlRole { name: "description"; query: "description/string()" }
- }
- */
 
 ApplicationWindow {
     id: window
     title: qsTr("Vehicle")
 
-    minimumWidth: 800
+    minimumWidth: 1024
     minimumHeight: 600
 
     visible: true
@@ -28,20 +17,148 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
+    Image {
+        id: background
+        anchors.fill: windowAnchors
+        fillMode: Image.PreserveAspectCrop
+        z: -1
+        source: "../images/background.png"
+    }
+
+    Item {
+        id: menu
+
+        property int iconSize: 64
+        property int spacing: 10
+
+        anchors.topMargin: 15
+        anchors.bottomMargin: 10
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        anchors.top: windowAnchors.top
+        anchors.left: windowAnchors.left
+        anchors.right: parameters.left
+        height: iconSize + anchors.topMargin + anchors.bottomMargin
+
+        MessageDialog {
+            id: messageDialog
+            Component.onCompleted: close()
+        }
+
+        IconButton {
+            id: openButton
+            anchors.top: parent.top
+            anchors.left: parent.left
+            icon: "../images/open.png"
+            size: Qt.size(parent.iconSize, parent.iconSize)
+            tooltip: qsTr("Open solutions")
+
+            onClicked: {
+                if(openDialog.folder.toString().length === 0) {
+                    if(saveDialog.folder.toString().length === 0) {
+                        openDialog.folder = applicationDirUrl;
+                    } else {
+                        openDialog.folder = saveDialog.folder;
+                    }
+                }
+                openDialog.open();
+            }
+
+            FileDialog {
+                id: openDialog
+                title: qsTr("Please choose a file")
+                nameFilters: [ qsTr("XML files (*.xml)") ]
+                selectFolder: false
+                selectMultiple: false
+                onAccepted: {
+                    if(!solutionModel.load(fileUrl)) {
+                        messageDialog.title = qsTr("Error");
+                        messageDialog.text = qsTr("Failed to load configurations");
+                        messageDialog.icon = StandardIcon.Warning;
+                        messageDialog.detailedText = solutionModel.lastError();
+                        messageDialog.open();
+                    } else {
+                        parameters.enabled = false;
+                    }
+                }
+                Component.onCompleted: close()
+            }
+        }
+        IconButton {
+            id: saveButton
+            anchors.top: parent.top
+            anchors.left: openButton.right
+            anchors.leftMargin: parent.spacing
+            icon: "../images/save.png"
+            size: Qt.size(parent.iconSize, parent.iconSize)
+            tooltip: qsTr("Save solutions")
+
+            onClicked: {
+                if(saveDialog.folder.toString().length === 0) {
+                    if(openDialog.folder.toString().length === 0) {
+                        saveDialog.folder = applicationDirUrl;
+                    } else {
+                        saveDialog.folder = openDialog.folder;
+                    }
+                }
+                saveDialog.open();
+            }
+
+            FileDialog {
+                id: saveDialog
+                title: qsTr("Please choose a file")
+                nameFilters: [ qsTr("XML files (*.xml)") ]
+                selectFolder: false
+                selectExisting: false
+                selectMultiple: false
+
+                onAccepted: {
+                    if(!solutionModel.save(fileUrl)) {
+                        messageDialog.title = qsTr("Error");
+                        messageDialog.text = qsTr("Failed to save configurations");
+                        messageDialog.icon = StandardIcon.Warning;
+                        messageDialog.detailedText = solutionModel.lastError();
+                        messageDialog.open();
+                    }
+                }
+                Component.onCompleted: close()
+            }
+        }
+        IconButton {
+            id: sortDescButton
+            anchors.top: parent.top
+            anchors.right: sortAscButton.left
+            anchors.rightMargin: parent.spacing
+            icon: "../images/pricedesc.png"
+            size: Qt.size(parent.iconSize, parent.iconSize)
+            tooltip: qsTr("Sort price descending")
+            onClicked: solutionModel.sort(0, Qt.DescendingOrder);
+        }
+        IconButton {
+            id: sortAscButton
+            anchors.top: parent.top
+            anchors.right: parent.right
+            icon: "../images/priceasc.png"
+            tooltip: qsTr("Sort price ascending")
+            size: Qt.size(parent.iconSize, parent.iconSize)
+            onClicked: solutionModel.sort(0, Qt.AscendingOrder);
+        }
+    }
+
     SolutionsView {
         id: solutions
         anchors.left: windowAnchors.left
-        anchors.top: windowAnchors.top
+        anchors.top: menu.bottom
         anchors.bottom: windowAnchors.bottom
         anchors.right: parameters.left
         anchors.margins: 10
 
         model: solutionModel
 
-        delegateColor: "#dfdfdf"
+        delegateColor: "#f5770a"
         delegateGradient: Gradient {
-            GradientStop { position: 0.0; color: "#dfdfdf" }
-            GradientStop { position: 1.0; color: "#dadada" }
+            GradientStop { position: 0.0; color: "#60ffcc00" }
+            GradientStop { position: 1.0; color: "#60f5770a" }
         }
     }
 
@@ -53,17 +170,47 @@ ApplicationWindow {
         anchors.topMargin: 5
         anchors.margins: 10
         width: 300
-        title: qsTr("Parameters")
+        title: qsTr("PARAMETERS")
 
         ParametersView {
             id: parametersList
             anchors.fill: parent
             model: parameterModel
 
-            onParameterChanged: {
-                parameterModel.setParameterValue(name, value);
-            }
+            onParameterChanged: parameterModel.setParameterValue(name, value)
         }
+    }
+
+    Rectangle {
+        id: parametersLock
+        anchors.fill: parameters
+        visible: !parameters.enabled
+        gradient: solutions.delegateGradient
+        opacity: 0.2
+    }
+
+    IconButton {
+        id: parametersLockIcon
+        anchors.centerIn: parametersLock
+        visible: parametersLock.visible
+        icon: "../images/unlock.png"
+        size: Qt.size(96,96)
+
+        onClicked: {
+            solutionModel.restore();
+            parameters.enabled = true;
+        }
+    }
+
+    Text {
+        visible: parametersLockIcon.visible
+        anchors.horizontalCenter: parametersLockIcon.horizontalCenter
+        anchors.top: parametersLockIcon.bottom
+        anchors.topMargin: 5
+
+        text: qsTr("Back to the configurations")
+        height: 60
+        font.pixelSize: 18
     }
 
     Rectangle {
@@ -73,7 +220,7 @@ ApplicationWindow {
         width: fullScreenHelpLabel.width * 1.5
         height: 50
 
-        color: "#dddddd"
+        color: "#80dddddd"
         radius: 3
         border.color: "#888888"
         border.width: 1
@@ -88,7 +235,7 @@ ApplicationWindow {
 
         Label {
             id: fullScreenHelpLabel
-            text: qsTr("You are in the full screen mode (Press F11 for Windowed mode)")
+            text: qsTr("You are in the full screen mode (Press F11 for windowed mode)")
             anchors.centerIn: parent
             font.pixelSize: 16
         }

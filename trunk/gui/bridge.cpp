@@ -1,23 +1,31 @@
-﻿#include <QtQml/QQmlContext>
+﻿#include <QtCore/QCryptographicHash>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QFile>
+
+#include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
 #include <QtQml/QQml.h>
 
 #include "middleware/solutionmodel.h"
 #include "datamodel/AndOrTree.hpp"
+#include "utils/xmlparser.h"
 #include "bridge.h"
 
 namespace vehicle {
 using namespace middleware;
+using namespace utils;
 namespace core {
 
-ModelQmlBridge::ModelQmlBridge(QQmlEngine* parent) : QObject(parent)
+ModelQmlBridge::ModelQmlBridge(QObject* parent) : QObject(parent), parameterModel_(0)
 {
     qmlRegisterUncreatableType<Parameter>("model.qml.bridge.utils", 1, 0, "Parameter", "Parameter::Type enum");
     qRegisterMetaType<ParameterModel*>("ParameterModel*");
     qRegisterMetaType<SolutionModel*>("SolutionModel*");
+}
 
-    // TODO : Данные должен предоставлять XML-парсер
-    tree_ = new AOTree;
+void ModelQmlBridge::initialize(QQmlEngine* engine)
+{
+    /*tree_ = new AOTree;
     tree_->setRoot(tree_->create(NodeKind::OR, dec::decimal2(0), NodeItem("Mark"))
          ->attach(tree_->create(NodeKind::AND, dec::decimal2(0), NodeItem("BMW"))
              ->attach(tree_->create(NodeKind::OR, dec::decimal2(0), NodeItem("Model"))
@@ -61,17 +69,48 @@ ModelQmlBridge::ModelQmlBridge(QQmlEngine* parent) : QObject(parent)
                         ->attach(tree_->create(NodeKind::OR, dec::decimal2(0), NodeItem("Audio system"))
                              ->append(NodeKind::NONE, dec::decimal2(34576), NodeItem("Hi-Fi Audio system"))
                              ->append(NodeKind::NONE, dec::decimal2(76000), NodeItem("Harman"))
-                             ->append(NodeKind::NONE, dec::decimal2(278446), NodeItem("Bang & Olufsen"))))))));
+                             ->append(NodeKind::NONE, dec::decimal2(278446), NodeItem("Bang & Olufsen"))))))));*/
 
-    parameterModel_ = new ParameterModel(tree_, this);
-
-    parent->rootContext()->setContextProperty("solutionModel", parameterModel_->solutionModel());
-    parent->rootContext()->setContextProperty("parameterModel", parameterModel_);
+    QString home(qApp->applicationDirPath());
 
 #ifdef _DEBUG
-    std::cout << "TREE:" << std::endl;
-    std::cout << *tree_ << std::endl;
+    std::cout << "Model source: " << home.toLocal8Bit().constData() << "/data.xml" << std::endl;
 #endif
+
+
+    tree_ = XmlParser::instance()->loadModel(home + "/data.xml");
+    if(tree_ == nullptr)
+        qFatal("%s", XmlParser::instance()->lastError().toLocal8Bit().constData());
+    else
+    {
+        parameterModel_ = new ParameterModel(tree_, this);
+
+        engine->rootContext()->setContextProperty("solutionModel", parameterModel_->solutionModel());
+        engine->rootContext()->setContextProperty("parameterModel", parameterModel_);
+
+        engine->rootContext()->setContextProperty("applicationDirUrl", QUrl::fromLocalFile(home));
+
+#ifdef _DEBUG
+        std::cout << "TREE:" << std::endl;
+        std::cout << *tree_ << std::endl;
+#endif
+    }
+}
+
+QByteArray ModelQmlBridge::modelMD5Hash()
+{
+    QByteArray hash;
+
+    QCryptographicHash cryp(QCryptographicHash::Md5);
+    QFile file(qApp->applicationDirPath() + "/data.xml");
+    if(file.open(QIODevice::ReadOnly))
+    {
+        cryp.addData(file.readAll());
+        hash = cryp.result().toHex();
+        file.close();
+    }
+
+    return hash;
 }
 
 ModelQmlBridge::~ModelQmlBridge()

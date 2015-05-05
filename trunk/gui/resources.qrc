@@ -5,5 +5,13 @@
         <file>qml/SolutionsView.qml</file>
         <file>qml/ParametersView.qml</file>
         <file>images/close.png</file>
+        <file>images/background.png</file>
+        <file>images/open.png</file>
+        <file>images/save.png</file>
+        <file>images/unlock.png</file>
+        <file>images/priceasc.png</file>
+        <file>images/pricedesc.png</file>
+        <file>js/tooltipcreator.js</file>
+        <file>qml/ToolTip.qml</file>
     </qresource>
 </RCC>

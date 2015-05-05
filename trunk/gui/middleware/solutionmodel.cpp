@@ -3,6 +3,7 @@
 #include <QtGui/QGuiApplication>
 #include <QtGui/QFontMetrics>
 
+#include "../utils/xmlparser.h"
 #include "solutionmodel.h"
 
 namespace vehicle {
@@ -13,14 +14,24 @@ Solution::Solution(solution_iterator::solution_tree_t solution)
     initialize(solution);
 }
 
+Solution::Solution(internal::SolutionInitializer&& solution)
+{
+    data_.fullDescription = qMove(solution.fullDescription);
+    data_.shortDescription = qMove(solution.shortDescription);
+    data_.price = qMove(solution.price);
+    data_.model = qMove(solution.model);
+    data_.mark = qMove(solution.mark);
+    data_.hash = qMove(solution.hash);
+}
+
 Solution::Solution(const Solution& solution)
 {
-    fullDescription_ = solution.fullDescription().toStringList();
-    shortDescription_ = solution.shortDescription();
-    price_ = solution.price();
-    model_ = solution.model();
-    mark_ = solution.mark();
-    hash_ = solution.hash();
+    data_.fullDescription = solution.fullDescription().toStringList();
+    data_.shortDescription = solution.shortDescription();
+    data_.price = solution.price();
+    data_.model = solution.model();
+    data_.mark = solution.mark();
+    data_.hash = solution.hash();
 }
 
 void Solution::initialize(solution_iterator::solution_tree_t solution)
@@ -29,19 +40,19 @@ void Solution::initialize(solution_iterator::solution_tree_t solution)
 
     auto markNode = root->getValue();
     Q_ASSERT(markNode.hasChoice);
-    mark_ = QString::fromStdString(markNode.node->child(markNode.index)->getValue().name());
+    data_.mark = QString::fromStdString(markNode.node->child(markNode.index)->getValue().name());
 
     auto modelNode = root->child(markNode.index)->child(0)->getValue();
     Q_ASSERT(modelNode.hasChoice);
-    model_ = QString::fromStdString(modelNode.node->child(modelNode.index)->getValue().name());
+    data_.model = QString::fromStdString(modelNode.node->child(modelNode.index)->getValue().name());
 
-    price_ = root->subtreeKey();
-    shortDescription_.clear();
-    fullDescription_.clear();
+    data_.price = root->subtreeKey();
+    data_.shortDescription.clear();
+    data_.fullDescription.clear();
 
     QByteArray hash;
-    hash.append(mark_);
-    hash.append(model_);
+    hash.append(data_.mark);
+    hash.append(data_.model);
 
     static std::function<void(const solution_iterator::solution_node_t*, QStringList*, QString*, QByteArray*)> expandNode =
     [](const solution_iterator::solution_node_t* node, QStringList* model, QString* detailed, QByteArray* hash)
@@ -72,14 +83,9 @@ void Solution::initialize(solution_iterator::solution_tree_t solution)
     };
 
     for(auto child : *root)
-        expandNode(child, &fullDescription_, &shortDescription_, &hash);
+        expandNode(child, &data_.fullDescription, &data_.shortDescription, &hash);
 
-    hash_ = QCryptographicHash::hash(hash, QCryptographicHash::Sha1);
-}
-
-QByteArray Solution::hash() const
-{
-    return hash_;
+    data_.hash = QCryptographicHash::hash(hash, QCryptographicHash::Sha1).toHex();
 }
 
 SolutionModel* SolutionModel::create(solution_iterator solutions, QObject* parent)
@@ -95,13 +101,14 @@ SolutionModel* SolutionModel::create(solution_iterator solutions, QObject* paren
     return model;
 }
 
-SolutionModel::SolutionModel(QObject* parent) : QAbstractListModel(parent), sortOrder_(-1)
+SolutionModel::SolutionModel(QObject* parent) : QAbstractListModel(parent), sortOrder_(-1), tempModel_(nullptr), tempMode_(false)
 {
     roles_[ShortDescriptionRole] = "ShortDescription";
     roles_[FullDescriptionRole] = "FullDescription";
     roles_[PriceRole] = "Price";
     roles_[ModelRole] = "Model";
     roles_[MarkRole] = "Mark";
+    roles_[HashRole] = "Hash";
 }
 
 SolutionModel::~SolutionModel()
@@ -111,6 +118,7 @@ SolutionModel::~SolutionModel()
 
 void SolutionModel::recomputeToFit(SolutionModel* model)
 {
+    Q_ASSERT(!tempMode_);
     // Новая модель не должна быть отсортирована
     Q_ASSERT(model->sortOrder_ == -1);
 
@@ -145,22 +153,26 @@ void SolutionModel::recomputeToFit(SolutionModel* model)
 
 int SolutionModel::rowCount(const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
-    return solutions_.count();
+    return tempMode_ ? tempModel_->rowCount(parent) : solutions_.count();
 }
 
 void SolutionModel::sort(int column, Qt::SortOrder order)
 {
+    if(tempMode_)
+    {
+        tempModel_->sort(column, order);
+        return;
+    }
+
     if(column == 0 && sortOrder_ != order)
     {
         // Значит сортировка уже производилась и необходимо инвертировать массив
         if(sortOrder_ != -1)
-            for(int i = 0; i < solutions_.size() / 2; ++i)
-            {
-                beginMoveRows(QModelIndex(), i, i, QModelIndex(), rowCount());
-                solutions_.push_back(solutions_.takeFirst());
-                endMoveRows();
-            }
+        {
+            beginResetModel();
+            std::reverse(solutions_.begin(), solutions_.end());
+            endResetModel();
+        }
         else
         {
             // Пузырёк
@@ -189,13 +201,15 @@ void SolutionModel::sort(int column, Qt::SortOrder order)
                         }
                     }
         }
-        endResetModel();
         sortOrder_ = order;
     }
 }
 
 QVariant SolutionModel::data(const QModelIndex& index, int role) const
 {
+    if(tempMode_)
+        return tempModel_->data(index, role);
+
     if(index.row() < 0 || index.row() >= rowCount())
         return QVariant();
 
@@ -211,6 +225,8 @@ QVariant SolutionModel::data(const QModelIndex& index, int role) const
         return solutions_[index.row()]->model();
     case SolutionModel::MarkRole :
         return solutions_[index.row()]->mark();
+    case SolutionModel::HashRole :
+        return solutions_[index.row()]->hash();
     default :
         Q_UNREACHABLE();
         return QVariant();
@@ -219,41 +235,86 @@ QVariant SolutionModel::data(const QModelIndex& index, int role) const
 
 void SolutionModel::addSolution(Solution* solution)
 {
+    Q_ASSERT(!tempMode_);
+    Q_ASSERT(!solutionsHash_.contains(solution->hash()));
+
     if(sortOrder_ != -1)
     {
-        // Бинарный поиск места вставки элемента
-        int start = 0, end = solutions_.count() - 1;
-        while(end - start > 1)
+        quint32 first = 0, last = solutions_.count();
+        if(last == 0)
         {
-            int mid = (start + end) / 2;
-            if(sortOrder_ == Qt::AscendingOrder)
-            {
-                if(solutions_[mid]->price() < solution->price())
-                    start = mid;
-                else
-                    end = mid;
-            }
-            else
-            {
-                if(solutions_[mid]->price() > solution->price())
-                    start = mid;
-                else
-                    end = mid;
-            }
-        }
-
-        if(start > (solutions_.count() - 1)/ 2)
-        {
-            beginInsertRows(QModelIndex(), start, start);
+            beginInsertRows(QModelIndex(), first, first);
             solutionsHash_[solution->hash()] = solution;
-            solutions_.insert(start, solution);
+            solutions_.push_back(solution);
+            endInsertRows();
+            return;
         }
         else
         {
-            beginInsertRows(QModelIndex(), start + 1, start + 1);
-            solutionsHash_[solution->hash()] = solution;
-            solutions_.insert(start + 1, solution);
+            if(sortOrder_ == Qt::AscendingOrder)
+            {
+                if(solutions_.first()->price() > solution->price())
+                {
+                    beginInsertRows(QModelIndex(), first, first);
+                    solutionsHash_[solution->hash()] = solution;
+                    solutions_.push_front(solution);
+                    endInsertRows();
+                    return;
+                }
+                else if(solutions_.last()->price() < solution->price())
+                {
+                    beginInsertRows(QModelIndex(), last, last);
+                    solutionsHash_[solution->hash()] = solution;
+                    solutions_.push_back(solution);
+                    endInsertRows();
+                    return;
+                }
+            }
+            else
+            {
+                if(solutions_.first()->price() < solution->price())
+                {
+                    beginInsertRows(QModelIndex(), first, first);
+                    solutionsHash_[solution->hash()] = solution;
+                    solutions_.push_front(solution);
+                    endInsertRows();
+                    return;
+                }
+                else if(solutions_.last()->price() > solution->price())
+                {
+                    beginInsertRows(QModelIndex(), last, last);
+                    solutionsHash_[solution->hash()] = solution;
+                    solutions_.push_back(solution);
+                    endInsertRows();
+                    return;
+                }
+            }
         }
+
+        // Бинарный поиск места вставки элемента
+        while(first < last)
+        {
+            quint32 mid = first + (last - first) / 2;
+
+            if(sortOrder_ == Qt::AscendingOrder)
+            {
+                if(solution->price() <= solutions_[mid]->price())
+                    last = mid;
+                else
+                    first = mid + 1;
+            }
+            else
+            {
+                if(solution->price() >= solutions_[mid]->price())
+                    last = mid;
+                else
+                    first = mid + 1;
+            }
+        }
+
+        beginInsertRows(QModelIndex(), last, last);
+        solutionsHash_[solution->hash()] = solution;
+        solutions_.insert(last, solution);
         endInsertRows();
     }
     else
@@ -265,18 +326,102 @@ void SolutionModel::addSolution(Solution* solution)
     }
 }
 
+QModelIndex SolutionModel::index(int row, int column, const QModelIndex&) const
+{
+    if(tempMode_)
+        return tempModel_->index(row, column);
+
+    if(row < 0 || row >= rowCount())
+        return QModelIndex();
+    else
+        return createIndex(row, column);
+}
+
+bool SolutionModel::save(const QUrl& file)
+{
+    bool ok = utils::XmlParser::instance()->saveSolutions(tempMode_ ? tempModel_ : this, file.toLocalFile());
+    lastError_ = utils::XmlParser::instance()->lastError();
+    return ok;
+}
+
+bool SolutionModel::load(const QUrl& file)
+{
+    restore();
+
+    bool isOutdated = true;
+    tempModel_ = utils::XmlParser::instance()->loadSolutions(file.toLocalFile(), &isOutdated);
+    lastError_ = utils::XmlParser::instance()->lastError();
+    if(tempModel_)
+    {
+        beginResetModel();
+        tempMode_ = true;
+        endResetModel();
+
+        connect(tempModel_, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)), SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), SIGNAL(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(tempModel_, SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)), SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(columnsInserted(QModelIndex,int,int)), SIGNAL(columnsInserted(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(columnsMoved(QModelIndex,int,int,QModelIndex,int)), SIGNAL(columnsMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(tempModel_, SIGNAL(columnsRemoved(QModelIndex,int,int)), SIGNAL(columnsRemoved(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        connect(tempModel_, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        connect(tempModel_, SIGNAL(headerDataChanged(Qt::Orientation,int,int)), SIGNAL(headerDataChanged(Qt::Orientation,int,int)));
+        connect(tempModel_, SIGNAL(layoutAboutToBeChanged()), SIGNAL(layoutAboutToBeChanged()));
+        connect(tempModel_, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>)), SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>)));
+        connect(tempModel_, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)), SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
+        connect(tempModel_, SIGNAL(layoutChanged()), SIGNAL(layoutChanged()));
+        connect(tempModel_, SIGNAL(layoutChanged(QList<QPersistentModelIndex>)), SIGNAL(layoutChanged(QList<QPersistentModelIndex>)));
+        connect(tempModel_, SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)), SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
+        connect(tempModel_, SIGNAL(modelAboutToBeReset()), SIGNAL(modelAboutToBeReset()));
+        connect(tempModel_, SIGNAL(modelReset()), SIGNAL(modelReset()));
+        connect(tempModel_, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(tempModel_, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(rowsInserted(QModelIndex,int,int)), SIGNAL(rowsInserted(QModelIndex,int,int)));
+        connect(tempModel_, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)), SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(tempModel_, SIGNAL(rowsRemoved(QModelIndex,int,int)), SIGNAL(rowsRemoved(QModelIndex,int,int)));
+
+        return true;
+    }
+    else
+        return false;
+}
+
+void SolutionModel::restore()
+{
+    if(tempMode_)
+    {
+        tempMode_ = false;
+        delete tempModel_;
+        tempModel_ = nullptr;
+        lastError_.clear();
+    }
+}
+
+QString SolutionModel::lastError() const
+{
+    return lastError_;
+}
+
 void SolutionModel::clear()
 {
     beginResetModel();
     qDeleteAll(solutions_);
     solutionsHash_.clear();
     solutions_.clear();
+    delete tempModel_;
+    tempMode_ = false;
     sortOrder_ = -1;
+    tempModel_ = nullptr;
+    lastError_.clear();
     endResetModel();
 }
 
 QHash<int,QByteArray> SolutionModel::roleNames() const
 {
+    if(tempMode_)
+        return tempModel_->roleNames();
+
     Q_ASSERT(!roles_.isEmpty());
     return roles_;
 }

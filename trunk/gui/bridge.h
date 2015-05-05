@@ -11,11 +11,14 @@ namespace core {
 
 class ModelQmlBridge : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-    explicit ModelQmlBridge(QQmlEngine* parent);
+    explicit ModelQmlBridge(QObject* parent);
     ~ModelQmlBridge();
+
+    static QByteArray modelMD5Hash();
+    void initialize(QQmlEngine* engine);
 
 private:
     middleware::ParameterModel* parameterModel_;

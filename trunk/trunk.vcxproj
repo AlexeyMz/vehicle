@@ -59,8 +59,11 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(QTDIR)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>qt5cored.lib;qt5guid.lib;qt5qmld.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qt5cored.lib;qt5xmld.lib;qt5guid.lib;qt5qmld.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y $(ProjectDir)data.xml $(OutDir)data.xml</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -76,8 +79,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(QTDIR)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>qt5core.lib;qt5gui.lib;qt5qml.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qt5core.lib;qt5xml.lib;qt5gui.lib;qt5qml.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y $(ProjectDir)data.xml $(OutDir)data.xml</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="datamodel\AndOrTree.hpp" />
@@ -114,12 +122,14 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)temp\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="gui\utils\xmlparser.h" />
     <ClInclude Include="libs\decimal_for_cpp\decimal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gui\bridge.cpp" />
     <ClCompile Include="gui\middleware\parametermodel.cpp" />
     <ClCompile Include="gui\middleware\solutionmodel.cpp" />
+    <ClCompile Include="gui\utils\xmlparser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="temp\moc_bridge.cpp" />
     <ClCompile Include="temp\moc_parametermodel.cpp" />
@@ -142,8 +152,15 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include="gui\js\tooltipcreator.js" />
     <None Include="gui\qml\IconButton.qml" />
     <None Include="gui\qml\main.qml" />
+    <None Include="gui\qml\ParametersView.qml" />
+    <None Include="gui\qml\SolutionsView.qml" />
+    <None Include="gui\qml\ToolTip.qml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="data.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,7 +15,7 @@ Item {
         snapMode: ListView.SnapToItem
         anchors.fill: parent
         cacheBuffer: 200
-        spacing: 10
+        spacing: 15
 
         add: Transition {
             NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
@@ -63,10 +63,10 @@ Item {
             // We can bind multiple element's opacity to this one property,
             // rather than having a "PropertyChanges" line for each element
             // we want to fade.
-            property real detailsOpacity: 0
+            property real detailsOpacity: 0.0
 
             width: ListView.view.width
-            height: 100
+            height: 80
 
             Rectangle {
                 id: background
@@ -93,7 +93,7 @@ Item {
             // in Details mode, then no change will happen.
             MouseArea {
                 id: mouseArea
-                anchors.fill: parent
+                anchors.fill: background
                 onClicked: solution.state = 'Details';
                 hoverEnabled: true
             }
@@ -119,8 +119,12 @@ Item {
                 anchors.top: background.top
                 anchors.topMargin: 10
                 anchors.right: background.right
-                anchors.rightMargin: 10
+                anchors.rightMargin: 10 + (closeButton.visible ? closeButton.width + closeButton.anchors.leftMargin + closeButton.anchors.rightMargin : 0)
                 text: Number(model.Price).toLocaleCurrencyString(Qt.locale())
+
+                Behavior on anchors.rightMargin {
+                    NumberAnimation { duration: 150 }
+                }
             }
 
             property string shortDescription: model.ShortDescription
@@ -164,6 +168,7 @@ Item {
                     textFormat: Text.RichText
                 }
 
+                visible: opacity > 0
                 opacity: solution.detailsOpacity
             }
 
@@ -176,6 +181,7 @@ Item {
                 anchors.margins: 5
 
                 size: Qt.size(32,32)
+                tooltip: qsTr("Close")
                 icon: "../images/close.png"
                 opacity: solution.detailsOpacity
                 visible: solution.detailsOpacity != 0
@@ -187,9 +193,7 @@ Item {
                 name: "Details"
 
                 //PropertyChanges { target: vehicleImage; width: 130; height: 130 }
-                PropertyChanges { target: solution; detailsOpacity: 1; height: listView.height }
-
-                PropertyChanges { target: priceField; anchors.right: closeButton.left }
+                PropertyChanges { target: solution; detailsOpacity: 1.0; height: listView.height }
 
                 // Move the list so that this item is at the top.
                 PropertyChanges { target: solution.ListView.view; explicit: true; contentY: solution.y }
@@ -198,10 +202,34 @@ Item {
                 PropertyChanges { target: solution.ListView.view; interactive: false }
             }
 
-            transitions: Transition {
-                // Make the state changes smooth
-                NumberAnimation { duration: 300; properties: "detailsOpacity,height,contentY" }
-            }
+            transitions: [
+                Transition {
+                    //from: "Details"
+                    NumberAnimation {
+                        duration: 300
+                        properties: "height,detailsOpacity,contentY"
+                    }
+                }/*,
+                Transition {
+                    to: "Details"
+                    SequentialAnimation {
+                        NumberAnimation {
+                            duration: 300;
+                            properties: "contentY";
+                        }
+                        ParallelAnimation {
+                            NumberAnimation {
+                                duration: 300;
+                                properties: "height";
+                            }
+                            NumberAnimation {
+                                duration: 300;
+                                properties: "detailsOpacity";
+                            }
+                        }
+                    }
+                }*/
+            ]
         }
     }
 }

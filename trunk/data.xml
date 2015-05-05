@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vehicle-model>
+	<and-or-tree>
+		<!-- A root must be a node with a type "mark",
+		     it will be implicitly cast to the "OR" type -->
+		<node type="mark" name="Mark">
+			<node type="AND" name="BMW">
+				<!-- The first child of each mark must me a node with a type "model",
+					it will be implicitly cast to the "OR" type -->
+				<node type="model" name="Model">
+					<node type="AND" name="X6" value="2900000">
+						<node type="OR" name="Engine">
+							<node type="AND" name="Gas">
+								<node type="OR" name="Engine power">
+									<node type="NONE" name="306 hp" value="503000"/>
+									<node type="NONE" name="450 hp" value="1248000"/>
+								</node>
+							</node>
+							<node type="AND" name="Diesel">
+								<node type="OR" name="Engine power">
+									<node type="NONE" name="249 hp" value="541000"/>
+									<node type="NONE" name="313 hp" value="858000"/>
+									<node type="NONE" name="381 hp" value="1675000"/>
+								</node>
+							</node>
+						</node>
+						<node type="AND" name="Options">
+							<node type="OR" name="Electropackage">
+								<node type="NONE" name="Front power windows" value="30000"/>
+								<node type="NONE" name="Full electropackage" value="210000"/>
+							</node>
+							<node type="OR" name="Audio system">
+								<node type="NONE" name="Harman" value="70000"/>
+								<node type="NONE" name="Bang &amp; Olufsen" value="190000"/>
+							</node>
+						</node>
+					</node>
+					<node type="AND" name="X5" value="2300000">
+						<node type="OR" name="Engine">
+							<node type="AND" name="Gas">
+								<node type="OR" name="Engine power">
+									<node type="NONE" name="306 hp" value="410000"/>
+									<node type="NONE" name="450 hp" value="1102000"/>
+								</node>
+							</node>
+							<node type="AND" name="Diesel">
+								<node type="OR" name="Engine power">
+									<node type="NONE" name="218 hp" value="525000"/>
+									<node type="NONE" name="249 hp" value="671000"/>
+									<node type="NONE" name="313 hp" value="786000"/>
+									<node type="NONE" name="381 hp" value="1259500"/>
+								</node>
+							</node>
+						</node>
+						<node type="AND" name="Options">
+							<node type="OR" name="Electropackage">
+								<node type="NONE" name="Front power windows" value="35000"/>
+								<node type="NONE" name="Full electropackage" value="206700"/>
+							</node>
+							<node type="OR" name="Audio system">
+								<node type="NONE" name="Hi-Fi audio system" value="34576"/>
+								<node type="NONE" name="Harman" value="76000"/>
+								<node type="NONE" name="Bang &amp; Olufsen" value="278446"/>
+							</node>
+							<node type="OR" name="TV">
+								<node type="NONE" name="Yes" value="81017"/>
+								<node type="NONE" name="No" value="0"/>
+							</node>
+						</node>
+					</node>
+				</node>
+			</node>
+		</node>
+	</and-or-tree>
+</vehicle-model>

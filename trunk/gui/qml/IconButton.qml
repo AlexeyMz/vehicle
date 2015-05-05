@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "../js/tooltipcreator.js" as ToolTip
 
 Item {
     id: iconButton
@@ -8,6 +9,7 @@ Item {
 
     property alias icon: img.source
     property alias size: img.sourceSize
+    property string tooltip
 
     signal clicked
 
@@ -27,6 +29,20 @@ Item {
         onReleased: parent.scale = 1
         onClicked: parent.clicked()
         cursorShape: Qt.PointingHandCursor
+
+        onEntered: {
+            if(tooltip.length > 0) {
+                ToolTip.fadeInDelay = 200;
+                ToolTip.fadeOutDelay = 100;
+                ToolTip.showDelay = 1000;
+                ToolTip.hideDelay = 300;
+                ToolTip.tip = tooltip;
+
+                var object = mapToItem(null, mouseX, mouseY);
+                ToolTip.show(object.x, object.y);
+            }
+        }
+        onExited: ToolTip.close()
     }
 
     states: [
