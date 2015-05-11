@@ -127,7 +127,9 @@ ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListMod
     roles_[ParameterRole] = "Parameter";
     roles_[NameSizeRole] = "NameWidth";
 
+#ifdef _DEBUG
     std::cout << *this << std::endl;
+#endif
 }
 
 ParameterModel::~ParameterModel()

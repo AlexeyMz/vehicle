@@ -9,6 +9,15 @@ class QQmlEngine;
 namespace vehicle {
 namespace core {
 
+///
+/// \class ModelQmlBridge
+/// \brief "Мост" между моделями и QML.
+/// При инициализации осуществляет загрузку данных из data.xml
+/// (находящейся в папке с исполняемым файлом приложения),
+/// инициализирует и добавляет в контекст QML через движок
+/// QML модели решений и параметров
+///
+///
 class ModelQmlBridge : public QObject
 {
     Q_OBJECT
@@ -17,9 +26,23 @@ public:
     explicit ModelQmlBridge(QObject* parent);
     ~ModelQmlBridge();
 
+    ///
+    /// \brief Возвращает MD5-хэш модели данных (файла data.xml)
+    ///
     static QByteArray modelMD5Hash();
+    ///
+    /// \brief Осуществляет базовую инициализую, добавляет
+    /// через движок QML \p engine в контекст QML модели
+    /// параметров и решений, себя самого (для доступа к
+    /// функции login() из QML)
+    ///
     void initialize(QQmlEngine* engine);
 
+    ///
+    /// \brief Выдает приглашение на ввод пароля,
+    /// MD5-хэш пароля хранится в реестре
+    /// \note по-умолчанию пароль "password"
+    ///
     Q_INVOKABLE static bool login();
 
 private:
