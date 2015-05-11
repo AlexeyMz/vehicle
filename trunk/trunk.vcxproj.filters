@@ -33,6 +33,9 @@
     <Filter Include="GUI\Utils">
       <UniqueIdentifier>{c018c9ea-12c1-455d-89c1-bcc883d7b593}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\QML\Styles">
+      <UniqueIdentifier>{7fec1776-54cf-4f88-8d97-554fec63a865}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="datamodel\AndOrTree.hpp">
@@ -52,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="gui\utils\xmlparser.h">
       <Filter>GUI\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\middleware\treemodel.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\middleware\treeview.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +91,12 @@
     <ClCompile Include="gui\utils\xmlparser.cpp">
       <Filter>GUI\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="gui\middleware\treemodel.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\middleware\treeview.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="gui\qml\IconButton.qml">
@@ -101,6 +116,18 @@
     </None>
     <None Include="gui\js\tooltipcreator.js">
       <Filter>GUI\JS</Filter>
+    </None>
+    <None Include="gui\styles\CheckBoxStyle.qml">
+      <Filter>GUI\QML\Styles</Filter>
+    </None>
+    <None Include="gui\styles\ComboBoxStyle.qml">
+      <Filter>GUI\QML\Styles</Filter>
+    </None>
+    <None Include="gui\styles\GroupBoxStyle.qml">
+      <Filter>GUI\QML\Styles</Filter>
+    </None>
+    <None Include="gui\styles\MenuStyle.qml">
+      <Filter>GUI\QML\Styles</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
