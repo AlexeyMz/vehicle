@@ -100,18 +100,25 @@ namespace vehicle {
             NodeKind getKind() const { return kind; }
 
             /**
-             * Собственный неизменяемый ключ узла.
-             * Для модификации следует удалить узел и создать новый.
+             * Собственный ключ узла.
              * @see subtreeKey
              */
             const Key & ownKey() const { return nodeKey; }
             /**
-             * Ключ поддерева с корнем в данном узле.
-             * Включает в себя собственный ключ узла и ключи дочерних поддеревьев.
-             * Обновляется при модификации поддерева (присоединении и отсоединении узлов).
+             * Обновляется при изменении собственного ключа или
+             * модификации поддерева (присоединении и отсоединении узлов).
              * @see ownKey
              */
             const Key & subtreeKey() const { return computedKey; }
+
+            /**
+            * Устанавливает новый собственный ключ узла, обновляя значение
+            * ключи поддеревьев.
+            */
+            void setOwnKey(const Key &key) {
+                nodeKey = key;
+                owner.recomputeKey(this);
+            }
 
             /** Устанавливает значение узла. */
             void setValue(const Value &newValue) { nodeValue = newValue; }
@@ -231,7 +238,7 @@ namespace vehicle {
             /** Тип узла. */
             NodeKind kind;
             /** Собственный ключ узла. */
-            const Key nodeKey;
+            Key nodeKey;
             /** Ключ поддерева с корнем в данном узле. */
             Key computedKey;
             Value nodeValue;
