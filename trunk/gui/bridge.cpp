@@ -1,6 +1,15 @@
 ﻿#include <QtCore/QCryptographicHash>
-#include <QtCore/QCoreApplication>
+#include <QtCore/QSettings>
 #include <QtCore/QFile>
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
 
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
@@ -87,6 +96,7 @@ void ModelQmlBridge::initialize(QQmlEngine* engine)
 
         engine->rootContext()->setContextProperty("solutionModel", parameterModel_->solutionModel());
         engine->rootContext()->setContextProperty("parameterModel", parameterModel_);
+        engine->rootContext()->setContextProperty("bridge", this);
 
         engine->rootContext()->setContextProperty("applicationDirUrl", QUrl::fromLocalFile(home));
 
@@ -111,6 +121,60 @@ QByteArray ModelQmlBridge::modelMD5Hash()
     }
 
     return hash;
+}
+
+bool ModelQmlBridge::login()
+{
+    QDialog* loginDialog = new QDialog;
+    loginDialog->setWindowTitle(tr("Login"));
+    loginDialog->setModal(true);
+
+    QLineEdit* pwdEdit = new QLineEdit(loginDialog);
+    pwdEdit->setEchoMode(QLineEdit::Password);
+    pwdEdit->setClearButtonEnabled(true);
+
+    QLabel* pwdLabel = new QLabel(tr("Password: "), loginDialog);
+    pwdLabel->setBuddy(pwdEdit);
+
+    QLabel* label = new QLabel(loginDialog);
+    label->setText(tr("The access to the data edit mode is allowed only for staff. Please enter the password."));
+
+    QPushButton* okButton = new QPushButton(tr("OK"), loginDialog);
+    QPushButton* cancelButton = new QPushButton(tr("Cancel"), loginDialog);
+
+    connect(cancelButton, SIGNAL(clicked()), loginDialog, SLOT(reject()));
+    connect(okButton, &QPushButton::clicked, [=]()
+    {
+        QByteArray pwdHash = QCryptographicHash::hash(pwdEdit->text().toLocal8Bit(), QCryptographicHash::Md5);
+        QSettings settings(QSettings::NativeFormat, QSettings::UserScope, "Vehicle", "Settings");
+        QByteArray originalHash = settings.value("password", QCryptographicHash::hash("password", QCryptographicHash::Md5)).toByteArray();
+
+        if(originalHash == pwdHash)
+            loginDialog->accept();
+        else
+            QMessageBox::critical(0, tr("Error"), tr("Wrong password!"));
+    });
+
+    QHBoxLayout* pwdLayout = new QHBoxLayout;
+    pwdLayout->addWidget(pwdLabel, 0);
+    pwdLayout->addWidget(pwdEdit, 1);
+
+    QHBoxLayout* buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addStretch();
+    buttonsLayout->addWidget(okButton);
+    buttonsLayout->addWidget(cancelButton);
+
+    QVBoxLayout* layout = new QVBoxLayout(loginDialog);
+    layout->addWidget(label, 0);
+    layout->addLayout(pwdLayout, 0);
+    layout->addLayout(buttonsLayout, 1);
+
+    pwdEdit->setFocus();
+    loginDialog->setFixedSize(loginDialog->sizeHint());
+
+    bool result = loginDialog->exec() == QDialog::Accepted;
+    delete loginDialog;
+    return result;
 }
 
 ModelQmlBridge::~ModelQmlBridge()

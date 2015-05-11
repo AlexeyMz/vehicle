@@ -230,7 +230,86 @@ bool XmlParser::saveModel(AOTree* model, const QString& fileName)
     Q_ASSERT(!fileName.isEmpty());
 
     error_.clear();
-    return false;
+
+    static QMap<NodeKind,QString> kindToStr;
+    kindToStr[NodeKind::NONE] = "NONE";
+    kindToStr[NodeKind::AND] = "AND";
+    kindToStr[NodeKind::OR] = "OR";
+
+    static std::function<void(AOTree::node_t*,QDomDocument*,QDomElement*)> expandNode =
+    [](AOTree::node_t* parentNode, QDomDocument* doc, QDomElement* parentElement)
+    {
+        for(size_t i = 0; i < parentNode->childCount(); ++i)
+        {
+            auto child = parentNode->child(i);
+            QDomElement childElement = doc->createElement("node");
+            childElement.setAttribute("name", child->getValue().name().c_str());
+            childElement.setAttribute("type", kindToStr.value(child->getKind()));
+            childElement.setAttribute("value", child->ownKey().getAsInteger());
+
+            expandNode(child, doc, &childElement);
+            parentElement->appendChild(childElement);
+        }
+    };
+
+    QFile file(fileName);
+    if(file.open(QIODevice::WriteOnly))
+    {
+        QDomDocument xml;
+
+        QDomElement vehiclemodel = xml.createElement("vehicle-model");
+        QDomElement andortree = xml.createElement("and-or-tree");
+
+        AOTree::node_t* root = model->getRoot();
+        Q_ASSERT(root);
+
+        QDomElement markElement = xml.createElement("node");
+        markElement.setAttribute("name", root->getValue().name().c_str());
+        markElement.setAttribute("type", "mark");
+
+        for(size_t i = 0; i < root->childCount(); ++i)
+        {
+            auto childI = root->child(i);
+            QDomElement specificMarkElement = xml.createElement("node");
+            specificMarkElement.setAttribute("name", childI->getValue().name().c_str());
+            specificMarkElement.setAttribute("type", kindToStr.value(childI->getKind()));
+
+            for(size_t j = 0; j < childI->childCount(); ++j)
+            {
+                auto childIJ = childI->child(j);
+                QDomElement modelElement = xml.createElement("node");
+                modelElement.setAttribute("name", childIJ->getValue().name().c_str());
+                modelElement.setAttribute("type", "model");
+
+                for(size_t k = 0; k < childIJ->childCount(); ++k)
+                {
+                    auto childIJK = childIJ->child(k);
+                    QDomElement specificModelElement = xml.createElement("node");
+                    specificModelElement.setAttribute("name", childIJK->getValue().name().c_str());
+                    specificModelElement.setAttribute("type", kindToStr.value(childIJK->getKind()));
+                    specificModelElement.setAttribute("value", childIJK->ownKey().getAsInteger());
+
+                    expandNode(childIJK, &xml, &specificModelElement);
+                    modelElement.appendChild(specificModelElement);
+                }
+
+                specificMarkElement.appendChild(modelElement);
+            }
+
+            markElement.appendChild(specificMarkElement);
+        }
+
+        andortree.appendChild(markElement);
+        vehiclemodel.appendChild(andortree);
+        xml.appendChild(vehiclemodel);
+
+        file.write(xml.toByteArray());
+        file.close();
+    }
+    else
+        error_ = QObject::tr("Cannot open file %1 for writing (%2)").arg(fileName).arg(file.errorString());
+
+    return error_.isEmpty();
 }
 
 SolutionModel* XmlParser::loadSolutions(const QString& fileName, bool* isOutdated)

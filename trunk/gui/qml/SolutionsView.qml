@@ -1,4 +1,5 @@
 import QtQuick 2.2
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.1
 
 Item {
@@ -25,10 +26,6 @@ Item {
         remove: Transition {
             NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 400 }
             NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: 400 }
-        }
-
-        displaced: Transition {
-            NumberAnimation { property: "x,y"; duration: 400; easing.type: Easing.OutBack }
         }
 
         delegate: solutionDelegate
@@ -64,6 +61,15 @@ Item {
             // rather than having a "PropertyChanges" line for each element
             // we want to fade.
             property real detailsOpacity: 0.0
+            property bool opacityIncreases: true
+
+            onDetailsOpacityChanged: {
+                if(detailsOpacity === 0.0) {
+                    opacityIncreases = true;
+                } else if(detailsOpacity == 1.0) {
+                    opacityIncreases = false;
+                }
+            }
 
             width: ListView.view.width
             height: 80
@@ -116,13 +122,15 @@ Item {
                 id: priceField
                 font.bold: true
                 font.pixelSize: 16
-                anchors.top: background.top
-                anchors.topMargin: 10
                 anchors.right: background.right
-                anchors.rightMargin: 10 + (closeButton.visible ? closeButton.width + closeButton.anchors.leftMargin + closeButton.anchors.rightMargin : 0)
+                anchors.rightMargin: 10
+                anchors.top: background.top
+                anchors.topMargin: {
+                    10 + (solution.detailsOpacity != 0 ? (solution.opacityIncreases || solution.detailsOpacity === 1 ? pdfButton.height + pdfButton.anchors.margins : 0) : 0)
+                }
                 text: Number(model.Price).toLocaleCurrencyString(Qt.locale())
 
-                Behavior on anchors.rightMargin {
+                Behavior on anchors.topMargin {
                     NumberAnimation { duration: 150 }
                 }
             }
@@ -172,6 +180,73 @@ Item {
                 opacity: solution.detailsOpacity
             }
 
+            // A button to save current solution as a PDF
+            IconButton {
+                id: pdfButton
+
+                anchors.top: background.top
+                anchors.right: printButton.left
+                anchors.margins: 5
+
+                size: Qt.size(32,32)
+                tooltip: qsTr("Save to PDF")
+                icon: "../images/pdf.png"
+                visible: solution.detailsOpacity > 0.5
+
+                onClicked: {
+                    if(saveDialog.folder.toString().length === 0)
+                        saveDialog.folder = applicationDirUrl;
+
+                    saveDialog.open();
+                }
+
+                FileDialog {
+                    id: saveDialog
+                    title: qsTr("Please choose a file")
+                    nameFilters: [ qsTr("PDF files (*.pdf)") ]
+                    selectFolder: false
+                    selectExisting: false
+                    selectMultiple: false
+
+                    onAccepted: {
+                        if(!solutionModel.saveSolution(index, fileUrl)) {
+                            messageDialog.title = qsTr("Error");
+                            messageDialog.text = qsTr("Failed to save configuration");
+                            messageDialog.icon = StandardIcon.Critical;
+                            messageDialog.detailedText = solutionModel.lastError();
+                            messageDialog.open();
+                        }
+                    }
+                    Component.onCompleted: close()
+                }
+            }
+
+            // A button to print current solution
+            IconButton {
+                id: printButton
+
+                anchors.top: background.top
+                anchors.right: closeButton.left
+                anchors.margins: 5
+
+                size: Qt.size(32,32)
+                tooltip: qsTr("Print")
+                icon: "../images/print.png"
+                visible: solution.detailsOpacity > 0.5
+
+                onClicked: {
+                    window.visibility = "Hidden"
+                    if(!solutionModel.printSolution(index)) {
+                        messageDialog.title = qsTr("Error");
+                        messageDialog.text = qsTr("Failed to print configuration");
+                        messageDialog.icon = StandardIcon.Critical;
+                        messageDialog.detailedText = solutionModel.lastError();
+                        messageDialog.open();
+                    }
+                    window.visibility = visibilityControl.state
+                }
+            }
+
             // A button to close the detailed view, i.e. set the state back to default ('').
             IconButton {
                 id: closeButton
@@ -183,8 +258,7 @@ Item {
                 size: Qt.size(32,32)
                 tooltip: qsTr("Close")
                 icon: "../images/close.png"
-                opacity: solution.detailsOpacity
-                visible: solution.detailsOpacity != 0
+                visible: solution.detailsOpacity > 0.5
 
                 onClicked: solution.state = '';
             }

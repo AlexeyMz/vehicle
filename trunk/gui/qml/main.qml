@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.1
+import "../styles" as Styles
 
 ApplicationWindow {
     id: window
@@ -51,7 +52,7 @@ ApplicationWindow {
             anchors.left: parent.left
             icon: "../images/open.png"
             size: Qt.size(parent.iconSize, parent.iconSize)
-            tooltip: qsTr("Open solutions")
+            tooltip: qsTr("Open configurations")
 
             onClicked: {
                 if(openDialog.folder.toString().length === 0) {
@@ -74,10 +75,16 @@ ApplicationWindow {
                     if(!solutionModel.load(fileUrl)) {
                         messageDialog.title = qsTr("Error");
                         messageDialog.text = qsTr("Failed to load configurations");
-                        messageDialog.icon = StandardIcon.Warning;
+                        messageDialog.icon = StandardIcon.Critical;
                         messageDialog.detailedText = solutionModel.lastError();
                         messageDialog.open();
                     } else {
+                        if(solutionModel.isOutdated()) {
+                            messageDialog.title = qsTr("Warning");
+                            messageDialog.text = qsTr("Configurations you have loaded were based on outdated data. Now they may not be available. Please, consult the staff for more information");
+                            messageDialog.icon = StandardIcon.Warning;
+                            messageDialog.open();
+                        }
                         parameters.enabled = false;
                     }
                 }
@@ -91,7 +98,7 @@ ApplicationWindow {
             anchors.leftMargin: parent.spacing
             icon: "../images/save.png"
             size: Qt.size(parent.iconSize, parent.iconSize)
-            tooltip: qsTr("Save solutions")
+            tooltip: qsTr("Save configurations")
 
             onClicked: {
                 if(saveDialog.folder.toString().length === 0) {
@@ -116,12 +123,28 @@ ApplicationWindow {
                     if(!solutionModel.save(fileUrl)) {
                         messageDialog.title = qsTr("Error");
                         messageDialog.text = qsTr("Failed to save configurations");
-                        messageDialog.icon = StandardIcon.Warning;
+                        messageDialog.icon = StandardIcon.Critical;
                         messageDialog.detailedText = solutionModel.lastError();
                         messageDialog.open();
                     }
                 }
                 Component.onCompleted: close()
+            }
+        }
+        IconButton {
+            id: editModeButton
+            anchors.top: parent.top
+            anchors.left: saveButton.right
+            anchors.leftMargin: parent.spacing
+            icon: "../images/user.png"
+            size: Qt.size(parent.iconSize, parent.iconSize)
+            tooltip: qsTr("Enter the data edit mode")
+            onClicked: {
+                window.visibility = "Hidden";
+                if(bridge.login()) {
+                    parameterModel.openEditMode();
+                }
+                window.visibility = visibilityControl.state
             }
         }
         IconButton {
@@ -171,6 +194,7 @@ ApplicationWindow {
         anchors.margins: 10
         width: 300
         title: qsTr("PARAMETERS")
+        style: Styles.GroupBoxStyle {}
 
         ParametersView {
             id: parametersList
@@ -283,7 +307,7 @@ ApplicationWindow {
         Keys.onPressed: {
             if(event.key === Qt.Key_F11) {
                 if(state === "FullScreen")
-                    state = "Windowed";
+                    state = "Maximized";
                 else
                     state = "FullScreen";
                 event.accepted = true;
@@ -293,10 +317,10 @@ ApplicationWindow {
 
         states: [
         State {
-            name: "Windowed"
+            name: "Maximized"
             PropertyChanges {
                 target: window
-                visibility: "Windowed"
+                visibility: "Maximized"
             }
             StateChangeScript {
                 script: {

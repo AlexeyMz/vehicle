@@ -20,6 +20,8 @@ public:
     static QByteArray modelMD5Hash();
     void initialize(QQmlEngine* engine);
 
+    Q_INVOKABLE static bool login();
+
 private:
     middleware::ParameterModel* parameterModel_;
     middleware::AOTree* tree_;

@@ -73,6 +73,7 @@ Stream& operator<<(Stream& os, const Parameter& p)
 }
 
 class SolutionModel;
+class TreeModel;
 
 class ParameterModel : public QAbstractListModel
 {
@@ -96,15 +97,22 @@ public:
 
     SolutionModel* solutionModel() const;
 
+    Q_INVOKABLE void openEditMode();
+
 public slots:
     void setParameterValue(const QString& name, const QString& value);
+
+private slots:
+    void treeChanged();
 
 protected:
     QHash<int,QByteArray> roleNames() const;
     void addParameter(Parameter* parameter);
+    void initialize();
 
 private:
     SolutionModel* solutionModel_;
+    TreeModel* treeModel_;
 
     QVector<Parameter*> actualParams_;
     QVector<Parameter*> model_;
@@ -112,6 +120,7 @@ private:
     QHash<int,QByteArray> roles_;
     AOTree* tree_;
     int nameSize_;
+    bool changed_;
 };
 
 template<typename Stream>

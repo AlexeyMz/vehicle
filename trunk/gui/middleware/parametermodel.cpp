@@ -1,6 +1,22 @@
-﻿#include <QtGui/QGuiApplication>
+﻿#include <QtWidgets/QApplication>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
+
 #include <QtGui/QFontMetrics>
 
+#include <QtCore/QCryptographicHash>
+#include <QtCore/QSettings>
+
+#include "../utils/xmlparser.h"
+
+#include "treeview.h"
+#include "treemodel.h"
 #include "solutionmodel.h"
 #include "parametermodel.h"
 
@@ -103,8 +119,28 @@ QString Parameter::value() const
     return value_;
 }
 
-ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListModel(parent), tree_(tree), nameSize_(-1)
+ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListModel(parent), solutionModel_(0), treeModel_(0), changed_(false), tree_(tree), nameSize_(-1)
 {
+    Q_ASSERT(tree_);
+    initialize();
+
+    roles_[ParameterRole] = "Parameter";
+    roles_[NameSizeRole] = "NameWidth";
+
+    std::cout << *this << std::endl;
+}
+
+ParameterModel::~ParameterModel()
+{
+    delete solutionModel_;
+    delete tree_;
+    clear();
+}
+
+void ParameterModel::initialize()
+{
+    Q_ASSERT(!treeModel_);
+
     static std::function<void(Parameter*,const QString&,AOTree::node_t*,ParameterModel*)> expandParameter =
     [](Parameter* parent, const QString& parentValue, AOTree::node_t* node, ParameterModel* model)
     {
@@ -112,7 +148,7 @@ ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListMod
         {
             Parameter* parameter = new Parameter(parent, node);
             parameter->setName(node->getValue().name().c_str());
-            model->addParameter(parameter);            
+            model->addParameter(parameter);
 
             if(parent)
                 parameter->setParentValue(parentValue);
@@ -136,19 +172,25 @@ ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListMod
     if(root)
         expandParameter(nullptr, "", root, this);
 
-    std::cout << *this;
-
     solution_iterator it(*tree_);
-    solutionModel_ = SolutionModel::create(it, this);
+    SolutionModel* solutionModel = SolutionModel::create(it, this);
+    if(solutionModel_)
+    {
+        solutionModel_->clear();
+        solutionModel_->recomputeToFit(solutionModel);
+    }
+    else
+        solutionModel_ = solutionModel;
 
-    roles_[ParameterRole] = "Parameter";
-    roles_[NameSizeRole] = "NameWidth";
+    treeModel_ = new TreeModel(tree_, this);
+    connect(treeModel_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(treeChanged()));
+    connect(treeModel_, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(treeChanged()));
+    connect(treeModel_, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(treeChanged()));
 }
 
-ParameterModel::~ParameterModel()
+void ParameterModel::treeChanged()
 {
-    delete solutionModel_;
-    clear();
+    changed_ = true;
 }
 
 int ParameterModel::rowCount(const QModelIndex& parent) const
@@ -246,6 +288,67 @@ SolutionModel* ParameterModel::solutionModel() const
     return solutionModel_;
 }
 
+void ParameterModel::openEditMode()
+{
+    changed_ = false;
+
+    QDialog* modalDialog = new QDialog;
+    modalDialog->setWindowTitle(tr("The data edit mode"));
+    modalDialog->setModal(true);
+
+    modalDialog->setStyleSheet("QTreeView { show-decoration-selected: 1; }");
+
+    TreeView* view = new TreeView(modalDialog);
+    view->setModel(treeModel_);
+    view->expandAll();
+
+    for(int i = 0; i < treeModel_->columnCount(); ++i)
+        view->resizeColumnToContents(i);
+
+    QPushButton* changeButton = new QPushButton(tr("Change password"), view);
+    connect(changeButton, &QPushButton::clicked, []()
+    {
+        bool ok;
+        QString pwd = QInputDialog::getText(0, tr("Change password"), tr("Input new password"), QLineEdit::Password, QString(), &ok);
+
+        if(ok)
+        {
+            if(pwd.isEmpty())
+                QMessageBox::critical(0, tr("Error"), tr("You have entered an empty password!"));
+            else
+            {
+                QSettings settings(QSettings::NativeFormat, QSettings::UserScope, "Vehicle", "Settings");
+                settings.setValue("password", QCryptographicHash::hash(pwd.toLocal8Bit(), QCryptographicHash::Md5));
+            }
+        }
+    });
+
+    QHBoxLayout* topLayout = new QHBoxLayout;
+    topLayout->addWidget(new QLabel(QString("<font color=\"#9e0000\">& - %1</font><br><font color=\"#0c3696\">|| - %2</font>").arg(tr("AND nodes")).arg(tr("OR nodes")), view));
+    topLayout->addStretch();
+    topLayout->addWidget(changeButton);
+
+
+    QVBoxLayout* layout = new QVBoxLayout(modalDialog);
+    layout->addLayout(topLayout);
+    layout->addWidget(view);
+
+    modalDialog->resize(modalDialog->width(), modalDialog->height());
+    modalDialog->exec();
+
+    if(changed_)
+    {
+        if(!utils::XmlParser::instance()->saveModel(tree_, qApp->applicationDirPath() + "/data.xml"))
+            QMessageBox::warning(0, tr("Warning"), QString("%1 (%2)").arg(tr("Failed to save data")).arg(utils::XmlParser::instance()->lastError()));
+
+        clear();
+        beginResetModel();
+        initialize();
+        endResetModel();
+    }
+    delete modalDialog;
+}
+
 void ParameterModel::clear()
 {
     beginResetModel();
@@ -253,6 +356,8 @@ void ParameterModel::clear()
     model_.clear();
     actualParams_.clear();
     nameSize_ = 0;
+    delete treeModel_;
+    treeModel_ = 0;
     endResetModel();
 }
 

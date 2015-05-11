@@ -75,7 +75,13 @@ public:
 
     Q_INVOKABLE bool save(const QUrl& file);
     Q_INVOKABLE bool load(const QUrl& file);
+    Q_INVOKABLE bool isOutdated() const;
+
+    Q_INVOKABLE bool saveSolution(int index, const QUrl& file);
+    Q_INVOKABLE bool printSolution(int index);
+
     Q_INVOKABLE QString lastError() const;
+
     Q_INVOKABLE void restore();
 
 protected:
@@ -90,6 +96,7 @@ private:
     QVector<Solution*> solutions_;
     QHash<int,QByteArray> roles_;
     int sortOrder_;
+    bool outdated_;
 };
 
 } // namespace middleware

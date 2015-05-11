@@ -13,5 +13,21 @@
         <file>images/pricedesc.png</file>
         <file>js/tooltipcreator.js</file>
         <file>qml/ToolTip.qml</file>
+        <file>images/user.png</file>
+        <file>images/icon.ico</file>
+        <file>styles/GroupBoxStyle.qml</file>
+        <file>images/editbox.png</file>
+        <file>images/focusframe.png</file>
+        <file>images/groupbox.png</file>
+        <file>images/arrow-down.png</file>
+        <file>images/check.png</file>
+        <file>styles/CheckBoxStyle.qml</file>
+        <file>styles/ComboBoxStyle.qml</file>
+        <file>images/arrow-up.png</file>
+        <file>styles/MenuStyle.qml</file>
+        <file>images/add.png</file>
+        <file>images/remove.png</file>
+        <file>images/pdf.png</file>
+        <file>images/print.png</file>
     </qresource>
 </RCC>

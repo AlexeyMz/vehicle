@@ -1,6 +1,9 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.1
+
 import model.qml.bridge.utils 1.0
+import "../styles" as Styles
 
 Item {
     signal parameterChanged(string name, string value)
@@ -44,6 +47,7 @@ Item {
                 visible: contextModel.Parameter.type === Parameter.ListType
                 model: contextModel.Parameter.list
                 width: listView.width - parameterName.width - listView.margins
+                style: Styles.ComboBoxStyle {}
 
                 onCurrentIndexChanged: {
                     parameterChanged(parameterName.name, currentText);
@@ -52,6 +56,7 @@ Item {
             CheckBox {
                 anchors.verticalCenter: parameterName.verticalCenter
                 visible: contextModel.Parameter.type === Parameter.BooleanType
+                style: Styles.CheckBoxStyle {}
 
                 onClicked: {
                     parameterChanged(parameterName.name, checked ? qsTr("Yes") : qsTr("No"));

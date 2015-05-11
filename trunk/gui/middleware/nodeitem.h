@@ -27,6 +27,11 @@ public:
     ///
     inline std::string name() const { return name_; }
     ///
+    /// \brief Изменение названия компонента
+    /// \param name - новое название
+    ///
+    inline void setName(const std::string& name) { name_ = name; }
+    ///
     /// \brief Метод необходим для поиска вариантов конфигураций
     /// \return "Зафиксирован ли выбор на данном узле среди альтернатив?"
     ///

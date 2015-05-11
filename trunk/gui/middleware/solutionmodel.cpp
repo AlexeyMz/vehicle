@@ -1,6 +1,12 @@
 ﻿#include <QtCore/QCryptographicHash>
 #include <QtCore/QLocale>
+
+#include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrinter>
+
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QGuiApplication>
+#include <QtGui/QTextDocument>
 #include <QtGui/QFontMetrics>
 
 #include "../utils/xmlparser.h"
@@ -101,7 +107,7 @@ SolutionModel* SolutionModel::create(solution_iterator solutions, QObject* paren
     return model;
 }
 
-SolutionModel::SolutionModel(QObject* parent) : QAbstractListModel(parent), sortOrder_(-1), tempModel_(nullptr), tempMode_(false)
+SolutionModel::SolutionModel(QObject* parent) : QAbstractListModel(parent), sortOrder_(-1), tempModel_(nullptr), tempMode_(false), outdated_(false)
 {
     roles_[ShortDescriptionRole] = "ShortDescription";
     roles_[FullDescriptionRole] = "FullDescription";
@@ -344,15 +350,108 @@ bool SolutionModel::save(const QUrl& file)
     return ok;
 }
 
+bool SolutionModel::saveSolution(int index, const QUrl& file)
+{
+    if(index < 0 || index >= solutions_.size())
+    {
+        lastError_ = tr("Cannot save configuration: incorrect index %1").arg(index);
+        return false;
+    }
+
+    static QString htmlTemplate =
+    QString("<body bgcolor=\"#ffda99\">"
+            "<p align=\"center\"><font color=\"#cf6311\"><h1>%1</h1><h2>" +
+            tr("Configuration ID:") + " %2<br>" + tr("Price:") + " %3</h2></font></p>"
+            "<h3><table><caption>" + tr("Parameters:") + "</caption>%4</table></h3></body>");
+
+    Solution* solution = solutions_[index];
+    QStringList params = solution->fullDescription().toStringList();
+    QString table;
+    for(const QString& param : params)
+    {
+        QStringList tmp = param.split(':');
+        QString paramName = tmp.first().simplified();
+        QString paramValue = param.mid(paramName.size() + 2);
+
+        table += "<tr><td>";
+        table += paramName;
+        table += "</td><td>";
+        table += paramValue;
+        table += "</td></tr>";
+    }
+
+    QTextDocument document;
+    document.setHtml(htmlTemplate.arg(solution->mark() + " " + solution->model())
+                                 .arg(solution->hash().toUpper().constData())
+                                 .arg(QLocale().toCurrencyString(solution->price().getAsInteger()))
+                                 .arg(table));
+
+    QPrinter printer;
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(file.toLocalFile());
+
+    document.print(&printer);
+    return true;
+}
+
+bool SolutionModel::printSolution(int index)
+{
+    if(index < 0 || index >= solutions_.size())
+    {
+        lastError_ = tr("Cannot print configuration: incorrect index %1").arg(index);
+        return false;
+    }
+
+    QPrinter printer;
+    QPrintDialog dlg(&printer);
+    dlg.setOption(QAbstractPrintDialog::PrintToFile, false);
+    dlg.setOption(QAbstractPrintDialog::PrintSelection, false);
+    dlg.setOption(QAbstractPrintDialog::PrintPageRange, false);
+    dlg.setOption(QAbstractPrintDialog::PrintCollateCopies, false);
+    if(dlg.exec() == QDialog::Accepted)
+    {
+        static QString htmlTemplate =
+        QString("<p align=\"center\"><h1>%1</h1><h2>" +
+                tr("Configuration ID:") + " %2<br>" + tr("Price:") + " %3</h2></p>"
+                "<h3><table><caption>" + tr("Parameters:") + "</caption>%4</table></h3>");
+
+        Solution* solution = solutions_[index];
+        QStringList params = solution->fullDescription().toStringList();
+        QString table;
+        for(const QString& param : params)
+        {
+            QStringList tmp = param.split(':');
+            QString paramName = tmp.first().simplified();
+            QString paramValue = param.mid(paramName.size() + 2);
+
+            table += "<tr><td>";
+            table += paramName;
+            table += "</td><td>";
+            table += paramValue;
+            table += "</td></tr>";
+        }
+
+        QTextDocument document;
+        document.setHtml(htmlTemplate.arg(solution->mark() + " " + solution->model())
+                                     .arg(solution->hash().toUpper().constData())
+                                     .arg(QLocale().toCurrencyString(solution->price().getAsInteger()))
+                                     .arg(table));
+        document.print(&printer);
+    }
+    return true;
+}
+
 bool SolutionModel::load(const QUrl& file)
 {
-    restore();
+    outdated_ = false;
 
-    bool isOutdated = true;
-    tempModel_ = utils::XmlParser::instance()->loadSolutions(file.toLocalFile(), &isOutdated);
+    SolutionModel* tempModel = utils::XmlParser::instance()->loadSolutions(file.toLocalFile(), &outdated_);
     lastError_ = utils::XmlParser::instance()->lastError();
-    if(tempModel_)
+    if(tempModel)
     {
+        restore();
+        tempModel_ = tempModel;
+
         beginResetModel();
         tempMode_ = true;
         endResetModel();
@@ -385,6 +484,11 @@ bool SolutionModel::load(const QUrl& file)
     }
     else
         return false;
+}
+
+bool SolutionModel::isOutdated() const
+{
+    return outdated_;
 }
 
 void SolutionModel::restore()
