@@ -1,5 +1,5 @@
 #include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QGuiApplication>
+#include <QtWidgets/QApplication>
 
 #include "gui/bridge.h"
 
@@ -8,7 +8,7 @@ using namespace vehicle::middleware;
 
 int main(int argc, char** argv)
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
 
 #ifdef _DEBUG

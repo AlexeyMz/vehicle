@@ -129,6 +129,12 @@
     <None Include="gui\styles\MenuStyle.qml">
       <Filter>GUI\QML\Styles</Filter>
     </None>
+    <None Include="gui\js\scrollbar.js">
+      <Filter>GUI\JS</Filter>
+    </None>
+    <None Include="gui\qml\ScrollBar.qml">
+      <Filter>GUI\QML</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="gui\resources.qrc">
@@ -148,5 +154,10 @@
     <Xml Include="data.xml">
       <Filter>Модель данных</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

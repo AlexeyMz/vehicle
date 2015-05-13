@@ -156,10 +156,12 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include="gui\js\scrollbar.js" />
     <None Include="gui\js\tooltipcreator.js" />
     <None Include="gui\qml\IconButton.qml" />
     <None Include="gui\qml\main.qml" />
     <None Include="gui\qml\ParametersView.qml" />
+    <None Include="gui\qml\ScrollBar.qml" />
     <None Include="gui\qml\SolutionsView.qml" />
     <None Include="gui\qml\ToolTip.qml" />
     <None Include="gui\styles\CheckBoxStyle.qml" />
@@ -169,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -29,5 +29,7 @@
         <file>images/remove.png</file>
         <file>images/pdf.png</file>
         <file>images/print.png</file>
+        <file>qml/ScrollBar.qml</file>
+        <file>js/scrollbar.js</file>
     </qresource>
 </RCC>

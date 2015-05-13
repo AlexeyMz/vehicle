@@ -15,6 +15,7 @@ Item {
 
         snapMode: ListView.SnapToItem
         anchors.fill: parent
+        anchors.rightMargin: scrollBar.width + 10
         cacheBuffer: 200
         spacing: 15
 
@@ -47,6 +48,20 @@ Item {
         }*/
     }
 
+    ScrollBar {
+        id: scrollBar
+        scrollArea: listView
+        height: parent.height
+        width: 15
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        background: delegateColor
+        sliderBorder.width: 1
+        sliderBorder.color: Qt.darker(delegateColor)
+        sliderGradient: delegateGradient
+    }
+
     // Delegate for the solutions.  This delegate has two modes:
     // 1. List mode (default), which just shows the picture, title, price and short description of the solution.
     // 2. Details mode, which shows detailed description instead of short.
@@ -66,8 +81,11 @@ Item {
             onDetailsOpacityChanged: {
                 if(detailsOpacity === 0.0) {
                     opacityIncreases = true;
+                    scrollBar.enabled = true;
                 } else if(detailsOpacity == 1.0) {
                     opacityIncreases = false;
+                } else {
+                    scrollBar.enabled = false;
                 }
             }
 
