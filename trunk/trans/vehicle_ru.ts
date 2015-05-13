@@ -25,13 +25,13 @@
         <location filename="../gui/utils/xmlparser.cpp" line="50"/>
         <source>The file %1 is not a correct (the second node must be an &apos;and-or-tree&apos;)</source>
         <oldsource>The file %1 is not a correct (the second node must be an &apos;and-or-tree&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (второй узел должен быть &apos;and-or-tree&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (второй узел должен быть &apos;and-or-tree&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="53"/>
         <source>The file %1 is not a correct (the first node must be a &apos;vehicle-model&apos;)</source>
         <oldsource>The file %1 is not a correct (the first node must be a &apos;vehicle-model&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (первый узел должен быть &apos;vehicle-model&apos;&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (первый узел должен быть &apos;vehicle-model&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="57"/>
@@ -58,13 +58,13 @@
         <location filename="../gui/utils/xmlparser.cpp" line="125"/>
         <source>The file %1 is not a correct (a node with a type &apos;mark&apos; must have a &apos;name&apos; attribute)</source>
         <oldsource>The file %1 is not a correct (a node with a type &apos;mark&apos; must have a &apos;name&apos; attribute</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел с типом &apos;mark&apos; должнен иметь атрибут &apos;name&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел с типом &apos;mark&apos; должнен иметь атрибут &apos;name&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="128"/>
         <source>The file %1 is not a correct (the child of an &apos;and-or-tree&apos; node must be a node with a type &apos;mark&apos;)</source>
         <oldsource>The file %1 is not a correct (the child of an &apos;and-or-tree&apos; node must be a node with a type &apos;mark&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (дочерний узел &apos;and-or-tree&apos; должен иметь тип &apos;mark&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (дочерний узел &apos;and-or-tree&apos; должен иметь тип &apos;mark&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="158"/>
@@ -98,91 +98,91 @@
         <location filename="../gui/utils/xmlparser.cpp" line="352"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;full-description&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;full-description&apos; child&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;full-description&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;full-description&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="358"/>
         <source>The file %1 is not a correct (&apos;full-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;full-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;full-description&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;full-description&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="364"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;short-description&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;short-description&apos; child&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;short-description&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;short-description&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="370"/>
         <source>The file %1 is not a correct (&apos;short-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;short-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;short-description&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;short-description&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="376"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;price&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;price&apos; child&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;price&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;price&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="382"/>
         <source>The file %1 is not a correct (&apos;price&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;price&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;price&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;price&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="389"/>
         <source>The file %1 is not a correct (a &apos;price&apos; attribute of node at line %2 must contains a number)</source>
         <oldsource>The file %1 is not a correct (a &apos;price&apos; attribute of node at line %2 must contains a number</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (атрибут &apos;price&apos; для узла в строке %2 должен содержать число)</translation>
+        <translation>Файл %1 имеет неверный формат данных (атрибут &apos;price&apos; для узла в строке %2 должен содержать число)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="395"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;model&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;model&apos; child&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;model&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;model&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="401"/>
         <source>The file %1 is not a correct (&apos;model&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;model&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;model&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;model&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="407"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;mark&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;mark&apos; child&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;mark&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;mark&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="413"/>
         <source>The file %1 is not a correct (&apos;mark&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;mark&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;mark&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;mark&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="419"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;hash&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;hash&apos; child&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;hash&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;hash&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="425"/>
         <source>The file %1 is not a correct (&apos;hash&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;hash&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;hash&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;hash&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="442"/>
         <source>The file %1 is not a correct (&apos;vehicle-solutions&apos; node must contains a &apos;tree&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;vehicle-solutions&apos; node must contains a &apos;tree&apos; attribute&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (узел &apos;vehicle-solution&apos; должен иметь атрибут &apos;tree&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (узел &apos;vehicle-solution&apos; должен иметь атрибут &apos;tree&apos;)</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="445"/>
         <source>The file %1 is not a correct (the first node must be a &apos;vehicle-solutions&apos;)</source>
         <oldsource>The file %1 is not a correct (the first node must be a &apos;vehicle-solutions&apos;</oldsource>
-        <translation type="unfinished">Файл %1 имеет неверный формат данных (первый узел должен быть &apos;vehicle-solutions&apos;)</translation>
+        <translation>Файл %1 имеет неверный формат данных (первый узел должен быть &apos;vehicle-solutions&apos;)</translation>
     </message>
 </context>
 <context>
