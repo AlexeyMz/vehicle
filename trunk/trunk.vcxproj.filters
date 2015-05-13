@@ -149,6 +149,7 @@
     <CustomBuild Include="gui\middleware\solutionmodel.h">
       <Filter>GUI\Model-QML Bridge</Filter>
     </CustomBuild>
+    <CustomBuild Include="trans/vehicle_ru.ts" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml">

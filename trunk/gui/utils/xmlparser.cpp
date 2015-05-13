@@ -47,10 +47,10 @@ AOTree* XmlParser::loadModel(const QString& fileName)
                     return tree;
                 }
                 else
-                    error_ = QObject::tr("The file %1 is not a correct (the second node must be an 'and-or-tree'").arg(fileName);
+                    error_ = QObject::tr("The file %1 is not a correct (the second node must be an 'and-or-tree')").arg(fileName);
             }
             else
-                error_ = QObject::tr("The file %1 is not a correct (the first node must be a 'vehicle-model'").arg(fileName);
+                error_ = QObject::tr("The file %1 is not a correct (the first node must be a 'vehicle-model')").arg(fileName);
         }
         else
         {
@@ -122,10 +122,10 @@ AOTree* XmlParser::readMarks(QDomElement* andortree)
             }
         }
         else
-            error_ = QObject::tr("The file %1 is not a correct (a node with a type 'mark' must have a 'name' attribute");
+            error_ = QObject::tr("The file %1 is not a correct (a node with a type 'mark' must have a 'name' attribute)");
     }
     else
-        error_ = QObject::tr("The file %1 is not a correct (the child of an 'and-or-tree' node must be a node with a type 'mark'");
+        error_ = QObject::tr("The file %1 is not a correct (the child of an 'and-or-tree' node must be a node with a type 'mark')");
 
     return tree;
 }
@@ -349,80 +349,80 @@ SolutionModel* XmlParser::loadSolutions(const QString& fileName, bool* isOutdate
                         QDomElement fullDescrElement = solution.firstChildElement("full-description");
                         if(fullDescrElement.isNull())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'full-description' child'").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'full-description' child')").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QStringList fullDescr = fullDescrElement.attribute("value").split(";;");
                         if(fullDescr.isEmpty())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('full-description' element at line %2 must contains a 'value' attribute'").arg(fileName).arg(fullDescrElement.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('full-description' element at line %2 must contains a 'value' attribute')").arg(fileName).arg(fullDescrElement.lineNumber());
                             break;
                         }
                         QDomElement shortDescrElement = solution.firstChildElement("short-description");
                         if(shortDescrElement.isNull())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'short-description' child'").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'short-description' child')").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QString shortDescr = shortDescrElement.attribute("value");
                         if(shortDescr.isEmpty())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('short-description' element at line %2 must contains a 'value' attribute'").arg(fileName).arg(shortDescrElement.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('short-description' element at line %2 must contains a 'value' attribute')").arg(fileName).arg(shortDescrElement.lineNumber());
                             break;
                         }
                         QDomElement priceElement = solution.firstChildElement("price");
                         if(priceElement.isNull())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'price' child'").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'price' child')").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QString priceStr = priceElement.attribute("value");
                         if(priceStr.isEmpty())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('price' element at line %2 must contains a 'value' attribute'").arg(fileName).arg(priceElement.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('price' element at line %2 must contains a 'value' attribute')").arg(fileName).arg(priceElement.lineNumber());
                             break;
                         }
                         bool ok = false;
                         int price = priceStr.toInt(&ok);
                         if(!ok)
                         {
-                            error_ = QObject::tr("The file %1 is not a correct (a 'price' attribute of node at line %2 must contains a number").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct (a 'price' attribute of node at line %2 must contains a number)").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QDomElement modelElement = solution.firstChildElement("model");
                         if(modelElement.isNull())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'model' child'").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'model' child')").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QString model = modelElement.attribute("value");
                         if(model.isEmpty())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('model' element at line %2 must contains a 'value' attribute'").arg(fileName).arg(modelElement.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('model' element at line %2 must contains a 'value' attribute')").arg(fileName).arg(modelElement.lineNumber());
                             break;
                         }
                         QDomElement markElement = solution.firstChildElement("mark");
                         if(markElement.isNull())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'mark' child'").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'mark' child')").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QString mark = markElement.attribute("value");
                         if(mark.isEmpty())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('mark' element at line %2 must contains a 'value' attribute'").arg(fileName).arg(markElement.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('mark' element at line %2 must contains a 'value' attribute')").arg(fileName).arg(markElement.lineNumber());
                             break;
                         }
                         QDomElement hashElement = solution.firstChildElement("hash");
                         if(hashElement.isNull())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'hash' child'").arg(fileName).arg(solution.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('solution' node at line %2 must contains a 'hash' child')").arg(fileName).arg(solution.lineNumber());
                             break;
                         }
                         QString hash = hashElement.attribute("value");
                         if(hash.isEmpty())
                         {
-                            error_ = QObject::tr("The file %1 is not a correct ('hash' element at line %2 must contains a 'value' attribute'").arg(fileName).arg(hashElement.lineNumber());
+                            error_ = QObject::tr("The file %1 is not a correct ('hash' element at line %2 must contains a 'value' attribute')").arg(fileName).arg(hashElement.lineNumber());
                             break;
                         }
 
@@ -439,10 +439,10 @@ SolutionModel* XmlParser::loadSolutions(const QString& fileName, bool* isOutdate
                         return solutionModel;
                 }
                 else
-                    error_ = QObject::tr("The file %1 is not a correct ('vehicle-solutions' node must contains a 'tree' attribute'").arg(fileName);
+                    error_ = QObject::tr("The file %1 is not a correct ('vehicle-solutions' node must contains a 'tree' attribute')").arg(fileName);
             }
             else
-                error_ = QObject::tr("The file %1 is not a correct (the first node must be a 'vehicle-solutions'").arg(fileName);
+                error_ = QObject::tr("The file %1 is not a correct (the first node must be a 'vehicle-solutions')").arg(fileName);
         }
         else
             error_.append(QString(" (%1:%2)").arg(line).arg(column));

@@ -62,7 +62,9 @@
       <AdditionalDependencies>qt5cored.lib;qt5xmld.lib;qt5printsupportd.lib;qt5guid.lib;qt5widgetsd.lib;qt5qmld.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(ProjectDir)data.xml $(OutDir)data.xml</Command>
+      <Command>copy /y $(ProjectDir)data.xml $(OutDir)data.xml
+copy /y $(ProjectDir)temp\vehicle_ru.qm $(OutDir)vehicle_ru.qm
+copy /y $(ProjectDir)trans\qt_ru.qm $(OutDir)qt_ru.qm</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,7 +86,9 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(ProjectDir)data.xml $(OutDir)data.xml</Command>
+      <Command>copy /y $(ProjectDir)data.xml $(OutDir)data.xml
+copy /y $(ProjectDir)temp\vehicle_ru.qm $(OutDir)vehicle_ru.qm
+copy /y $(ProjectDir)trans\qt_ru.qm $(OutDir)qt_ru.qm</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -143,14 +147,16 @@
   <ItemGroup>
     <CustomBuild Include="gui\resources.qrc">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\rcc.exe" -name resources -no-compress gui/resources.qrc -o temp/qrc_resources.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\lrelease.exe" trans/vehicle_ru.ts -qm temp/vehicle_ru.qm
+"$(QTDIR)\bin\rcc.exe" -name resources -no-compress gui/resources.qrc -o temp/qrc_resources.cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Rcc'ing resources.qrc...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">temp/qrc_resources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">temp/qrc_%(Filename).cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gui/resources.qrc</AdditionalInputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\rcc.exe" -name resources -no-compress gui/resources.qrc -o temp/qrc_resources.cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\lrelease.exe" trans/vehicle_ru.ts -qm temp/vehicle_ru.qm
+"$(QTDIR)\bin\rcc.exe" -name resources -no-compress gui/resources.qrc -o temp/qrc_resources.cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Rcc'ing resources.qrc...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">temp/qrc_resources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">temp/qrc_%(Filename).cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gui/resources.qrc</AdditionalInputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
@@ -168,6 +174,19 @@
     <None Include="gui\styles\ComboBoxStyle.qml" />
     <None Include="gui\styles\GroupBoxStyle.qml" />
     <None Include="gui\styles\MenuStyle.qml" />
+    <CustomBuild Include="trans/vehicle_ru.ts">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\lupdate.exe -no-obsolete -recursive . -ts "$(ProjectDir)trans/vehicle_ru.ts"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Генерация ts файла...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)temp/vehicle_ru.qm</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)trans/vehicle_ru.ts</AdditionalInputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\lupdate.exe -no-obsolete -recursive . -ts "$(ProjectDir)trans/vehicle_ru.ts"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Генерация ts файла...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)temp/vehicle_ru.qm</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)trans/vehicle_ru.ts</AdditionalInputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml" />
