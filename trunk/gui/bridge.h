@@ -35,8 +35,11 @@ public:
     /// через движок QML \p engine в контекст QML модели
     /// параметров и решений, себя самого (для доступа к
     /// функции login() из QML)
+    /// \param engine - движок QML
+    /// \param error - текст ошибки, если таковая имела место быть
+    /// \return false, если инициализация не удалась (ошибка в \p error)
     ///
-    void initialize(QQmlEngine* engine);
+    bool initialize(QQmlEngine* engine, QString* error = 0);
 
     ///
     /// \brief Выдает приглашение на ввод пароля,

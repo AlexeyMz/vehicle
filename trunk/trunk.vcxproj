@@ -127,7 +127,16 @@ copy /y $(ProjectDir)trans\qt_ru.qm $(OutDir)qt_ru.qm</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
     <ClInclude Include="gui\middleware\treemodel.h" />
-    <ClInclude Include="gui\middleware\treeview.h" />
+    <CustomBuild Include="gui\middleware\treeview.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe %(FullPath) -o $(ProjectDir)temp\moc_%(Filename).cpp</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe %(FullPath) -o $(ProjectDir)temp\moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing %(Filename)%(Extension)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing %(Filename)%(Extension)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)temp\moc_%(Filename).cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)temp\moc_%(Filename).cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+    </CustomBuild>
     <ClInclude Include="gui\utils\xmlparser.h" />
     <ClInclude Include="libs\decimal_for_cpp\decimal.h" />
   </ItemGroup>
@@ -142,6 +151,7 @@ copy /y $(ProjectDir)trans\qt_ru.qm $(OutDir)qt_ru.qm</Command>
     <ClCompile Include="temp\moc_bridge.cpp" />
     <ClCompile Include="temp\moc_parametermodel.cpp" />
     <ClCompile Include="temp\moc_solutionmodel.cpp" />
+    <ClCompile Include="temp\moc_treeview.cpp" />
     <ClCompile Include="temp\qrc_resources.cpp" />
   </ItemGroup>
   <ItemGroup>

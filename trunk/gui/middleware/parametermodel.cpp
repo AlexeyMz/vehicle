@@ -20,14 +20,9 @@
 #include "solutionmodel.h"
 #include "parametermodel.h"
 
-#define CONTEXT "vehicle::middleware"
-
 namespace vehicle {
 using namespace algorithm;
 namespace middleware {
-
-const char * const YES = QT_TRANSLATE_NOOP(CONTEXT, "Yes");
-const char * const NO = QT_TRANSLATE_NOOP(CONTEXT, "No");
 
 Parameter::Parameter(Parameter* parent, AOTree::node_t* node)
     : parent_(parent), node_(node), type_(UnknownType), visible_(!parent_)
@@ -83,7 +78,7 @@ void Parameter::chooseValue(const QString& value)
         for(size_t i = 0; i < node_->childCount(); ++i)
         {
             auto child = node_->child(i);
-            if(type_ == BooleanType && value.compare(qApp->translate(CONTEXT, NO), Qt::CaseInsensitive) == 0)
+            if(type_ == BooleanType && value.compare(tr("No"), Qt::CaseInsensitive) == 0)
                 child->getValue().setFixed(false);
             else
                 child->getValue().setFixed(child->getValue().name().c_str() == value);
@@ -101,7 +96,7 @@ void Parameter::addValue(const QString& value)
     }
     else if(type_ == BooleanType || type_ == UnknownType)
     {
-        if(value.compare(qApp->translate(CONTEXT, YES)) != 0 && value.compare(qApp->translate(CONTEXT, NO)) != 0)
+        if(value.compare(tr("Yes")) != 0 && value.compare(tr("No")) != 0)
         {
             list_.insert(value, 0);
             type_ = ListType;
@@ -110,7 +105,7 @@ void Parameter::addValue(const QString& value)
     else
         Q_UNREACHABLE();
 
-    if(list_.size() == 2 && list_.contains(qApp->translate(CONTEXT, YES)) && list_.contains(qApp->translate(CONTEXT, NO)))
+    if(list_.size() == 2 && list_.contains(tr("Yes")) && list_.contains(tr("No")))
         type_ = BooleanType;
 }
 
@@ -146,33 +141,56 @@ void ParameterModel::initialize()
     static std::function<void(Parameter*,const QString&,AOTree::node_t*,ParameterModel*)> expandParameter =
     [](Parameter* parent, const QString& parentValue, AOTree::node_t* node, ParameterModel* model)
     {
+        // если разворачиваем узел ИЛИ
         if(node->getKind() == NodeKind::OR)
         {
+            // создаем параметр с переданным родителем и текущим узлом
             Parameter* parameter = new Parameter(parent, node);
             parameter->setName(node->getValue().name().c_str());
             model->addParameter(parameter);
 
+            // если родитель есть, устанавливаем его необходимое значение
             if(parent)
                 parameter->setParentValue(parentValue);
 
+            // обходим всех детей данного узла
             for(size_t i = 0; i < node->childCount(); ++i)
             {
                 auto child = node->child(i);
+                // добавляем в текущий узел возможное его значение
                 parameter->addValue(child->getValue().name().c_str());
-                expandParameter(parameter, parentValue, child, model);
+                // и разворачиваем дочерний узел с родителем в виде текущего параметра
+                // и значением родителя в виде имени текущего дочерного узла
+                expandParameter(parameter, child->getValue().name().c_str(), child, model);
             }
         }
+        // если разворачиваем узел И
         else if(node->getKind() == NodeKind::AND)
+            // обходим всех детей данного узла
             for(size_t i = 0; i < node->childCount(); ++i)
+                // если у узла есть родитель и это И узел,
+                // то разворачиваем этот узел с тем жи параметрами, что были переданы
                 if(node->getParent() && node->getParent()->getKind() == NodeKind::AND)
                     expandParameter(parent, parentValue, node->child(i), model);
+                // иначе, значение родителя устанавливаем в значение текущего узла
                 else
                     expandParameter(parent, node->getValue().name().c_str(), node->child(i), model);
     };
 
+    static std::function<void(AOTree::node_t*)> unfixNode =
+    [](AOTree::node_t* node)
+    {
+        node->getValue().setFixed(false);
+        for(size_t i = 0; i < node->childCount(); ++i)
+            unfixNode(node->child(i));
+    };
+
     auto root = tree_->getRoot();
     if(root)
+    {
+        unfixNode(root);
         expandParameter(nullptr, "", root, this);
+    }
 
     solution_iterator it(*tree_);
     SolutionModel* solutionModel = SolutionModel::create(it, this);
@@ -253,6 +271,8 @@ void ParameterModel::addParameter(Parameter* parameter)
     int width = QFontMetrics(QGuiApplication::font()).size(Qt::TextSingleLine, parameter->name()).width() + 10;
     if(width > nameSize_)
         nameSize_ = width;
+    if(nameSize_ > 130)
+        nameSize_ = 130;
 }
 
 const Parameter* const ParameterModel::parameterAt(int pos) const

@@ -79,47 +79,46 @@ AOTree* XmlParser::readMarks(QDomElement* andortree)
         if(!rootName.isEmpty())
         {
             QDomElement markElement = root.firstChildElement("node");
-            while(!markElement.isNull())
+            if(!markElement.isNull())
             {
-                if(!tree)
+                while(!markElement.isNull())
                 {
-                    tree = new AOTree;
-                    tree->setRoot(tree->create(NodeKind::OR, dec::decimal2(0), NodeItem(rootName.toStdString())));
+                    if(!tree)
+                    {
+                        tree = new AOTree;
+                        tree->setRoot(tree->create(NodeKind::OR, dec::decimal2(0), NodeItem(rootName.toStdString())));
+                    }
+
+                    if(markElement.attribute("type").compare("AND", Qt::CaseInsensitive) != 0)
+                    {
+                        error_ = QObject::tr("The file %1 is not a correct (children of a 'mark' node must have a type 'AND')");
+                        break;
+                    }
+
+                    QString name = markElement.attribute("name");
+                    if(name.isEmpty())
+                    {
+                        error_ = QObject::tr("The file %1 is not a correct (children of a 'mark' node must have a 'name' attribute)");
+                        break;
+                    }
+
+                    AOTree::node_t* markNode = tree->create(NodeKind::AND, dec::decimal2(0), NodeItem(name.toStdString()));
+                    tree->getRoot()->attach(markNode);
+
+                    if(!readModelElement(&markElement, tree, markNode))
+                        break;
+
+                    markElement = markElement.nextSiblingElement("node");
                 }
 
-                NodeKind kind = NodeKind::NONE;
-                if(markElement.attribute("type").compare("AND", Qt::CaseInsensitive) == 0)
-                    kind = NodeKind::AND;
-                else if(markElement.attribute("type").compare("OR", Qt::CaseInsensitive) == 0)
-                    kind = NodeKind::OR;
-
-                if(kind == NodeKind::NONE)
+                if(tree && !error_.isEmpty())
                 {
-                    error_ = QObject::tr("The file %1 is not a correct (children of a 'mark' node must have a type 'AND' or 'OR')");
-                    break;
+                    delete tree;
+                    tree = nullptr;
                 }
-
-                QString name = markElement.attribute("name");
-                if(name.isEmpty())
-                {
-                    error_ = QObject::tr("The file %1 is not a correct (children of a 'mark' node must have a 'name' attribute)");
-                    break;
-                }
-
-                AOTree::node_t* markNode = tree->create(kind, dec::decimal2(0), NodeItem(name.toStdString()));
-                tree->getRoot()->attach(markNode);
-
-                if(!readModelElement(&markElement, tree, markNode))
-                    break;
-
-                markElement = markElement.nextSiblingElement("node");
             }
-
-            if(tree && !error_.isEmpty())
-            {
-                delete tree;
-                tree = nullptr;
-            }
+            else
+                error_ = QObject::tr("The file %1 is not a correct (a node with a type 'mark' must a have at least one child)");
         }
         else
             error_ = QObject::tr("The file %1 is not a correct (a node with a type 'mark' must have a 'name' attribute)");

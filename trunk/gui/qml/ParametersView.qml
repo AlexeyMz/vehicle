@@ -39,6 +39,7 @@ Item {
                 //renderType: Text.NativeRendering
                 text: name + ": "
                 width: contextModel.NameWidth
+                elide: Text.ElideRight
                 height: 25
                 verticalAlignment: Text.AlignVCenter
             }

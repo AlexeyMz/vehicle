@@ -22,6 +22,23 @@ TreeView::TreeView(QWidget* parent) : QTreeView(parent)
     setAnimated(true);
 }
 
+void TreeView::setModel(QAbstractItemModel* model)
+{
+	connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(resizeToContents()));
+	connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(resizeToContents()));
+	connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(resizeToContents()));
+	QTreeView::setModel(model);
+}
+
+void TreeView::resizeToContents()
+{
+	for(int i = 0; i < model()->rowCount(); ++i)
+	{
+		resizeColumnToContents(i);
+		setColumnWidth(i, columnWidth(i) + 5);
+	}
+}
+
 void TreeView::mousePressEvent(QMouseEvent* event)
 {
     QTreeView::mousePressEvent(event);

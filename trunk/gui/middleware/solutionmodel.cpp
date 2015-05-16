@@ -77,20 +77,20 @@ void Solution::initialize(solution_iterator::solution_tree_t solution)
             hash->append(name + value);
 
             // skip mark and model in a short description
-            if(model->size() > 2)
+            if(model->size() > 1)
             {
                 detailed->append(name + ": " + value + "     ");
                 *detailed = QFontMetrics(QGuiApplication::font()).elidedText(*detailed, Qt::ElideRight, 500);
             }
-        }
 
-        for(auto child : *childNode)
-            expandNode(child, model, detailed, hash);
+            expandNode(childNode, model, detailed, hash);
+        }
+        else
+            for(auto child : *childNode)
+                expandNode(child, model, detailed, hash);
     };
 
-    for(auto child : *root)
-        expandNode(child, &data_.fullDescription, &data_.shortDescription, &hash);
-
+    expandNode(root->child(root->getValue().index), &data_.fullDescription, &data_.shortDescription, &hash);
     data_.hash = QCryptographicHash::hash(hash, QCryptographicHash::Sha1).toHex();
 }
 

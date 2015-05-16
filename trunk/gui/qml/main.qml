@@ -192,7 +192,7 @@ ApplicationWindow {
         anchors.top: windowAnchors.top
         anchors.topMargin: 5
         anchors.margins: 10
-        width: 300
+        width: 330
         title: qsTr("PARAMETERS")
         style: Styles.GroupBoxStyle {}
 

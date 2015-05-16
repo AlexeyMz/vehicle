@@ -32,7 +32,7 @@ ModelQmlBridge::ModelQmlBridge(QObject* parent) : QObject(parent), parameterMode
     qRegisterMetaType<SolutionModel*>("SolutionModel*");
 }
 
-void ModelQmlBridge::initialize(QQmlEngine* engine)
+bool ModelQmlBridge::initialize(QQmlEngine* engine, QString* error)
 {
     /*tree_ = new AOTree;
     tree_->setRoot(tree_->create(NodeKind::OR, dec::decimal2(0), NodeItem("Mark"))
@@ -89,7 +89,11 @@ void ModelQmlBridge::initialize(QQmlEngine* engine)
 
     tree_ = XmlParser::instance()->loadModel(home + "/data.xml");
     if(tree_ == nullptr)
-        qFatal("%s", XmlParser::instance()->lastError().toLocal8Bit().constData());
+    {
+        if(error)
+            *error = XmlParser::instance()->lastError();
+        return false;
+    }
     else
     {
         parameterModel_ = new ParameterModel(tree_, this);
@@ -104,6 +108,7 @@ void ModelQmlBridge::initialize(QQmlEngine* engine)
         std::cout << "TREE:" << std::endl;
         std::cout << *tree_ << std::endl;
 #endif
+        return true;
     }
 }
 

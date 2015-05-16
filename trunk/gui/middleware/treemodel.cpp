@@ -53,15 +53,49 @@ bool TreeItem::insertChildren(int position, int count)
     if(position < 0 || position > children_.size())
         return false;
 
-    if(kind() == NodeKind::NONE)
-        setKind(NodeKind::AND);
+    bool isMarkNode = false;
+    bool isModelNode = false;
+
+    if(tree_->getRoot() == node_)
+        isMarkNode = true;
+    else
+        for(size_t i = 0; i < tree_->getRoot()->childCount(); ++i)
+            if(tree_->getRoot()->child(i)->child(0) == node_)
+            {
+                isModelNode = true;
+                break;
+            }
+
+    if(!isMarkNode && !isModelNode)
+    {
+        if(kind() == NodeKind::NONE)
+            setKind(NodeKind::AND);
+        else if(kind() == NodeKind::AND)
+            setKind(NodeKind::OR);
+    }
 
     for(int row = 0; row < count; ++row)
     {
-        AOTree::node_t* child = tree_->create(NodeKind::NONE, dec::decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
-        node_->attach(child);
+        AOTree::node_t* nodeChild = tree_->create(NodeKind::NONE, dec::decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
+        TreeItem* itemChild = new TreeItem(tree_, nodeChild, this);
+        node_->attach(nodeChild);
 
-        children_.insert(position, new TreeItem(tree_, child, this));
+        children_.insert(position, itemChild);
+
+        // Марке автоматически добавляем узел модели и модель
+        if(isMarkNode)
+        {
+            AOTree::node_t* modelNode = tree_->create(NodeKind::OR, dec::decimal2(0), NodeItem(QObject::tr("Model").toStdString()));
+            TreeItem* modelNodeItem = new TreeItem(tree_, modelNode, itemChild);
+            itemChild->children_.push_back(modelNodeItem);
+            nodeChild->setKind(NodeKind::AND);
+            nodeChild->attach(modelNode);
+
+            AOTree::node_t* model = tree_->create(NodeKind::AND, dec::decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
+            TreeItem* modelItem = new TreeItem(tree_, model, modelNodeItem);
+            modelNodeItem->children_.push_back(modelItem);
+            modelNode->attach(model);
+        }
     }
 
     return true;
@@ -70,6 +104,22 @@ bool TreeItem::insertChildren(int position, int count)
 bool TreeItem::removeChildren(int position, int count)
 {
     if(position < 0 || position + count > children_.size())
+        return false;
+
+    bool isMarkNode = false;
+    bool isModelNode = false;
+
+    if(tree_->getRoot() == node_)
+        isMarkNode = true;
+    else
+        for(size_t i = 0; i < tree_->getRoot()->childCount(); ++i)
+            if(tree_->getRoot()->child(i)->child(0) == node_)
+            {
+                isModelNode = true;
+                break;
+            }
+
+    if((isMarkNode || isModelNode) && children_.count() == 1)
         return false;
 
     for(int row = 0; row < count; ++row)
@@ -82,10 +132,13 @@ bool TreeItem::removeChildren(int position, int count)
         delete children_.takeAt(position);
     }
 
-    if(childCount() == 1)
-        setKind(NodeKind::AND);
-    else if(childCount() == 0)
-        setKind(NodeKind::NONE);
+    if(!isMarkNode && !isModelNode)
+    {
+        if(childCount() == 1)
+            setKind(NodeKind::AND);
+        else if(childCount() == 0)
+            setKind(NodeKind::NONE);
+    }
 
     return true;
 }

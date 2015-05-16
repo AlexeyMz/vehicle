@@ -4,12 +4,12 @@
 <context>
     <name>ParametersView</name>
     <message>
-        <location filename="../gui/qml/ParametersView.qml" line="62"/>
+        <location filename="../gui/qml/ParametersView.qml" line="63"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../gui/qml/ParametersView.qml" line="62"/>
+        <location filename="../gui/qml/ParametersView.qml" line="63"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -17,9 +17,15 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../gui/middleware/treemodel.cpp" line="61"/>
+        <location filename="../gui/middleware/treemodel.cpp" line="79"/>
+        <location filename="../gui/middleware/treemodel.cpp" line="94"/>
         <source>Name</source>
         <translation>Название</translation>
+    </message>
+    <message>
+        <location filename="../gui/middleware/treemodel.cpp" line="88"/>
+        <source>Model</source>
+        <translation>Модель</translation>
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="50"/>
@@ -40,149 +46,159 @@
     </message>
     <message>
         <location filename="../gui/utils/xmlparser.cpp" line="64"/>
-        <location filename="../gui/utils/xmlparser.cpp" line="453"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="452"/>
         <source>Cannot open file %1 (%2)</source>
         <translation>Не удается открыть файл (%1) (%2)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="98"/>
-        <source>The file %1 is not a correct (children of a &apos;mark&apos; node must have a type &apos;AND&apos; or &apos;OR&apos;)</source>
-        <translation>Файл %1 имеет неверный формат данных (дети узла &apos;mark&apos; должны имеьт тип &apos;AND&apos; или &apos;OR&apos;)</translation>
+        <location filename="../gui/utils/xmlparser.cpp" line="94"/>
+        <source>The file %1 is not a correct (children of a &apos;mark&apos; node must have a type &apos;AND&apos;)</source>
+        <translation>Файл %1 имеет неверный формат данных (дочерний узел &apos;mark&apos; должен иметь тип &apos;AND&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="105"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="101"/>
         <source>The file %1 is not a correct (children of a &apos;mark&apos; node must have a &apos;name&apos; attribute)</source>
         <translation>Файл %1 имеет неверный формат данных (дети узла &apos;mark&apos; должны иметь атрибут &apos;name&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="125"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="121"/>
+        <source>The file %1 is not a correct (a node with a type &apos;mark&apos; must a have at least one child)</source>
+        <translation>Файл %1 имеет неверный формат данных (узел с типом &apos;mark&apos; должен иметь по крайней мере один дочерний узел)</translation>
+    </message>
+    <message>
+        <location filename="../gui/utils/xmlparser.cpp" line="124"/>
         <source>The file %1 is not a correct (a node with a type &apos;mark&apos; must have a &apos;name&apos; attribute)</source>
         <oldsource>The file %1 is not a correct (a node with a type &apos;mark&apos; must have a &apos;name&apos; attribute</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел с типом &apos;mark&apos; должнен иметь атрибут &apos;name&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="128"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="127"/>
         <source>The file %1 is not a correct (the child of an &apos;and-or-tree&apos; node must be a node with a type &apos;mark&apos;)</source>
         <oldsource>The file %1 is not a correct (the child of an &apos;and-or-tree&apos; node must be a node with a type &apos;mark&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (дочерний узел &apos;and-or-tree&apos; должен иметь тип &apos;mark&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="158"/>
-        <location filename="../gui/utils/xmlparser.cpp" line="206"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="157"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="205"/>
         <source>The file %1 is not a correct (node at line </source>
         <translation>Файл %1 имеет неверный формат данных (узел в строке </translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="158"/>
-        <location filename="../gui/utils/xmlparser.cpp" line="206"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="157"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="205"/>
         <source> must have a &apos;name&apos; attribute)</source>
         <translation>должен иметь атрибут &apos;name&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="179"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="178"/>
         <source>The file %1 is not a correct (&apos;model&apos; node must have a &apos;name&apos; attribute)</source>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;model&apos; должен иметь атрибут &apos;name&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="185"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="184"/>
         <source>The file %1 is not a correct (the first child of each &apos;mark&apos; node child must have a type &apos;model&apos;)</source>
         <translation>Файл %1 имеет неверный формат данных (первый дочерний узел каждого ребенка узла &apos;mark&apos; должен иметь тип &apos;model&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="310"/>
-        <location filename="../gui/utils/xmlparser.cpp" line="512"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="309"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="511"/>
         <source>Cannot open file %1 for writing (%2)</source>
         <translation>Не удается открыть файл %1 для записи (%2)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="352"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="351"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;full-description&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;full-description&apos; child&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;full-description&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="358"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="357"/>
         <source>The file %1 is not a correct (&apos;full-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;full-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;full-description&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="364"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="363"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;short-description&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;short-description&apos; child&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;short-description&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="370"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="369"/>
         <source>The file %1 is not a correct (&apos;short-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;short-description&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;short-description&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="376"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="375"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;price&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;price&apos; child&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;price&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="382"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="381"/>
         <source>The file %1 is not a correct (&apos;price&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;price&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;price&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="389"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="388"/>
         <source>The file %1 is not a correct (a &apos;price&apos; attribute of node at line %2 must contains a number)</source>
         <oldsource>The file %1 is not a correct (a &apos;price&apos; attribute of node at line %2 must contains a number</oldsource>
         <translation>Файл %1 имеет неверный формат данных (атрибут &apos;price&apos; для узла в строке %2 должен содержать число)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="395"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="394"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;model&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;model&apos; child&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;model&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="401"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="400"/>
         <source>The file %1 is not a correct (&apos;model&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;model&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;model&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="407"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="406"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;mark&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;mark&apos; child&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;mark&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="413"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="412"/>
         <source>The file %1 is not a correct (&apos;mark&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;mark&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;mark&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="419"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="418"/>
         <source>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;hash&apos; child&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;solution&apos; node at line %2 must contains a &apos;hash&apos; child&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;solution&apos; в строке %2 должен содержать дочерний узел &apos;hash&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="425"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="424"/>
         <source>The file %1 is not a correct (&apos;hash&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;hash&apos; element at line %2 must contains a &apos;value&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;hash&apos; в строке %2 должен иметь атрибут &apos;value&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="442"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="441"/>
         <source>The file %1 is not a correct (&apos;vehicle-solutions&apos; node must contains a &apos;tree&apos; attribute&apos;)</source>
         <oldsource>The file %1 is not a correct (&apos;vehicle-solutions&apos; node must contains a &apos;tree&apos; attribute&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (узел &apos;vehicle-solution&apos; должен иметь атрибут &apos;tree&apos;)</translation>
     </message>
     <message>
-        <location filename="../gui/utils/xmlparser.cpp" line="445"/>
+        <location filename="../gui/utils/xmlparser.cpp" line="444"/>
         <source>The file %1 is not a correct (the first node must be a &apos;vehicle-solutions&apos;)</source>
         <oldsource>The file %1 is not a correct (the first node must be a &apos;vehicle-solutions&apos;</oldsource>
         <translation>Файл %1 имеет неверный формат данных (первый узел должен быть &apos;vehicle-solutions&apos;)</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="44"/>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
     </message>
 </context>
 <context>
@@ -318,86 +334,102 @@
 <context>
     <name>vehicle::core::ModelQmlBridge</name>
     <message>
-        <location filename="../gui/bridge.cpp" line="129"/>
+        <location filename="../gui/bridge.cpp" line="134"/>
         <source>Login</source>
         <translation>Вход</translation>
     </message>
     <message>
-        <location filename="../gui/bridge.cpp" line="136"/>
+        <location filename="../gui/bridge.cpp" line="141"/>
         <source>Password: </source>
         <translation>Пароль: </translation>
     </message>
     <message>
-        <location filename="../gui/bridge.cpp" line="140"/>
+        <location filename="../gui/bridge.cpp" line="145"/>
         <source>The access to the data edit mode is allowed only for staff. Please enter the password.</source>
         <translation>Доступ к режиму редактирования данных доступен только для персонала. Пожалуйста, введите пароль.</translation>
     </message>
     <message>
-        <location filename="../gui/bridge.cpp" line="142"/>
+        <location filename="../gui/bridge.cpp" line="147"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../gui/bridge.cpp" line="143"/>
+        <location filename="../gui/bridge.cpp" line="148"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../gui/bridge.cpp" line="155"/>
+        <location filename="../gui/bridge.cpp" line="160"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../gui/bridge.cpp" line="155"/>
+        <location filename="../gui/bridge.cpp" line="160"/>
         <source>Wrong password!</source>
         <translation>Неверный пароль!</translation>
     </message>
 </context>
 <context>
+    <name>vehicle::middleware::Parameter</name>
+    <message>
+        <location filename="../gui/middleware/parametermodel.cpp" line="81"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="99"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="108"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../gui/middleware/parametermodel.cpp" line="99"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="108"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+</context>
+<context>
     <name>vehicle::middleware::ParameterModel</name>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="298"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="318"/>
         <source>The data edit mode</source>
         <translation>Режим редактирования данных</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="310"/>
-        <location filename="../gui/middleware/parametermodel.cpp" line="314"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="330"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="334"/>
         <source>Change password</source>
         <translation>Изменить пароль</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="314"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="334"/>
         <source>Input new password</source>
         <translation>Введите новый пароль</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="319"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="339"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="319"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="339"/>
         <source>You have entered an empty password!</source>
         <translation>Вы ввели пустой пароль!</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="329"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="349"/>
         <source>AND nodes</source>
         <translation>И-узлы</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="329"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="349"/>
         <source>OR nodes</source>
         <translation>ИЛИ-узлы</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="344"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="364"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="344"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="364"/>
         <source>Failed to save data</source>
         <translation>Не удалось сохранить данные</translation>
     </message>
@@ -436,33 +468,33 @@
 <context>
     <name>vehicle::middleware::TreeView</name>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="42"/>
-        <location filename="../gui/middleware/treeview.cpp" line="55"/>
+        <location filename="../gui/middleware/treeview.cpp" line="59"/>
+        <location filename="../gui/middleware/treeview.cpp" line="72"/>
         <source>Change the node kind</source>
         <translation>Изменить тип узла</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="46"/>
+        <location filename="../gui/middleware/treeview.cpp" line="63"/>
         <source>AND</source>
         <translation>И</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="46"/>
+        <location filename="../gui/middleware/treeview.cpp" line="63"/>
         <source>OR</source>
         <translation>ИЛИ</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="55"/>
+        <location filename="../gui/middleware/treeview.cpp" line="72"/>
         <source>Choose the node kind</source>
         <translation>Выберите тип узла</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="73"/>
+        <location filename="../gui/middleware/treeview.cpp" line="90"/>
         <source>Add child node</source>
         <translation>Добавить дочерний узел</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="80"/>
+        <location filename="../gui/middleware/treeview.cpp" line="97"/>
         <source>Remove node</source>
         <translation>Удалить узел</translation>
     </message>

@@ -59,9 +59,6 @@
     <ClInclude Include="gui\middleware\treemodel.h">
       <Filter>GUI\Model-QML Bridge</Filter>
     </ClInclude>
-    <ClInclude Include="gui\middleware\treeview.h">
-      <Filter>GUI\Model-QML Bridge</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +92,9 @@
       <Filter>GUI\Model-QML Bridge</Filter>
     </ClCompile>
     <ClCompile Include="gui\middleware\treeview.cpp">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="temp\moc_treeview.cpp">
       <Filter>GUI\Model-QML Bridge</Filter>
     </ClCompile>
   </ItemGroup>
@@ -150,6 +150,9 @@
       <Filter>GUI\Model-QML Bridge</Filter>
     </CustomBuild>
     <CustomBuild Include="trans/vehicle_ru.ts" />
+    <CustomBuild Include="gui\middleware\treeview.h">
+      <Filter>GUI\Model-QML Bridge</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml">

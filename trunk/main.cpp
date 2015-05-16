@@ -1,5 +1,6 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 #include <QtCore/QTranslator>
 
 #include "gui/bridge.h"
@@ -31,9 +32,16 @@ int main(int argc, char** argv)
     QQmlApplicationEngine engine(&app);
 
     ModelQmlBridge bridge(&app);
-    bridge.initialize(&engine);
+    QString error;
 
-    engine.load(QUrl("qrc:///gui/qml/main.qml"));
-
-	return app.exec();
+    if(bridge.initialize(&engine, &error))
+    {
+        engine.load(QUrl("qrc:///gui/qml/main.qml"));
+        return app.exec();
+    }
+    else
+    {
+        QMessageBox::critical(0, QObject::tr("Error"), error);
+        return EXIT_FAILURE;
+    }
 }
