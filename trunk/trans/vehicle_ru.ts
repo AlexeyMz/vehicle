@@ -198,7 +198,7 @@
     <message>
         <location filename="../main.cpp" line="44"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../gui/qml/SolutionsView.qml" line="232"/>
         <source>Failed to save configuration</source>
-        <translation>Не удается сохранить конфигурации</translation>
+        <translation>Не удается сохранить конфигурацию</translation>
     </message>
     <message>
         <location filename="../gui/qml/SolutionsView.qml" line="251"/>
@@ -237,7 +237,7 @@
     <message>
         <location filename="../gui/qml/SolutionsView.qml" line="259"/>
         <source>Failed to print configuration</source>
-        <translation>Не удается вывести на печать конфигурации</translation>
+        <translation>Не удается вывести на печать конфигурацию</translation>
     </message>
     <message>
         <location filename="../gui/qml/SolutionsView.qml" line="277"/>
