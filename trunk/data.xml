@@ -1,75 +1,176 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
 <vehicle-model>
-	<and-or-tree>
-		<!-- A root must be a node with a type "mark",
-		     it will be implicitly cast to the "OR" type -->
-		<node type="mark" name="Mark">
-			<node type="AND" name="BMW">
-				<!-- The first child of each mark must me a node with a type "model",
-					it will be implicitly cast to the "OR" type -->
-				<node type="model" name="Model">
-					<node type="AND" name="X6" value="2900000">
-						<node type="OR" name="Engine">
-							<node type="AND" name="Gas">
-								<node type="OR" name="Engine power">
-									<node type="NONE" name="306 hp" value="503000"/>
-									<node type="NONE" name="450 hp" value="1248000"/>
-								</node>
-							</node>
-							<node type="AND" name="Diesel">
-								<node type="OR" name="Engine power">
-									<node type="NONE" name="249 hp" value="541000"/>
-									<node type="NONE" name="313 hp" value="858000"/>
-									<node type="NONE" name="381 hp" value="1675000"/>
-								</node>
-							</node>
-						</node>
-						<node type="AND" name="Options">
-							<node type="OR" name="Electropackage">
-								<node type="NONE" name="Front power windows" value="30000"/>
-								<node type="NONE" name="Full electropackage" value="210000"/>
-							</node>
-							<node type="OR" name="Audio system">
-								<node type="NONE" name="Harman" value="70000"/>
-								<node type="NONE" name="Bang &amp; Olufsen" value="190000"/>
-							</node>
-						</node>
-					</node>
-					<node type="AND" name="X5" value="2300000">
-						<node type="OR" name="Engine">
-							<node type="AND" name="Gas">
-								<node type="OR" name="Engine power">
-									<node type="NONE" name="306 hp" value="410000"/>
-									<node type="NONE" name="450 hp" value="1102000"/>
-								</node>
-							</node>
-							<node type="AND" name="Diesel">
-								<node type="OR" name="Engine power">
-									<node type="NONE" name="218 hp" value="525000"/>
-									<node type="NONE" name="249 hp" value="671000"/>
-									<node type="NONE" name="313 hp" value="786000"/>
-									<node type="NONE" name="381 hp" value="1259500"/>
-								</node>
-							</node>
-						</node>
-						<node type="AND" name="Options">
-							<node type="OR" name="Electropackage">
-								<node type="NONE" name="Front power windows" value="35000"/>
-								<node type="NONE" name="Full electropackage" value="206700"/>
-							</node>
-							<node type="OR" name="Audio system">
-								<node type="NONE" name="Hi-Fi audio system" value="34576"/>
-								<node type="NONE" name="Harman" value="76000"/>
-								<node type="NONE" name="Bang &amp; Olufsen" value="278446"/>
-							</node>
-							<node type="OR" name="TV">
-								<node type="NONE" name="Yes" value="81017"/>
-								<node type="NONE" name="No" value="0"/>
-							</node>
-						</node>
-					</node>
-				</node>
-			</node>
-		</node>
-	</and-or-tree>
+ <and-or-tree>
+  <node type="mark" name="Марка">
+   <node type="AND" name="BMW">
+    <node type="model" name="Модель">
+     <node type="AND" value="2900000" name="X6">
+      <node type="OR" value="0" name="Двигатель">
+       <node type="AND" value="0" name="Бензин">
+        <node type="OR" value="0" name="Мощность двигателя">
+         <node type="NONE" value="503500" name="306 л.с."/>
+         <node type="NONE" value="1248125" name="450 л.с."/>
+        </node>
+       </node>
+       <node type="AND" value="0" name="Дизель">
+        <node type="OR" value="0" name="Мощность двигателя">
+         <node type="NONE" value="541520" name="249 л.с."/>
+         <node type="NONE" value="858090" name="313 л.с."/>
+         <node type="NONE" value="1675055" name="381 л.с."/>
+        </node>
+       </node>
+      </node>
+      <node type="AND" value="0" name="Опции">
+       <node type="OR" value="0" name="Электропакет">
+        <node type="NONE" value="29982" name="Передние стеклоподъемники"/>
+        <node type="NONE" value="215235" name="Полный электропакет"/>
+       </node>
+       <node type="OR" value="0" name="Аудио система">
+        <node type="NONE" value="71526" name="Harman"/>
+        <node type="NONE" value="193840" name="Bang &amp; Olufsen"/>
+       </node>
+      </node>
+     </node>
+     <node type="AND" value="2300000" name="X5">
+      <node type="OR" value="0" name="Двигатель">
+       <node type="AND" value="0" name="Бензин">
+        <node type="OR" value="0" name="Мощность двигателя">
+         <node type="NONE" value="413400" name="306 л.с."/>
+         <node type="NONE" value="1102050" name="450 л.с."/>
+        </node>
+       </node>
+       <node type="AND" value="0" name="Дизель">
+        <node type="OR" value="0" name="Мощность двигателя">
+         <node type="NONE" value="525125" name="218 л.с."/>
+         <node type="NONE" value="671055" name="249 л.с."/>
+         <node type="NONE" value="786260" name="313 л.с."/>
+         <node type="NONE" value="1259500" name="381 л.с."/>
+        </node>
+       </node>
+      </node>
+      <node type="AND" value="0" name="Опции">
+       <node type="OR" value="0" name="Электропакет">
+        <node type="NONE" value="35639" name="Передние стеклоподъемники"/>
+        <node type="NONE" value="206752" name="Полный электропакет"/>
+       </node>
+       <node type="OR" value="0" name="Аудио система">
+        <node type="NONE" value="34576" name="Hi-Fi аудио система"/>
+        <node type="NONE" value="76252" name="Harman"/>
+        <node type="NONE" value="278446" name="Bang &amp; Olufsen"/>
+       </node>
+       <node type="OR" value="0" name="Телевизор">
+        <node type="NONE" value="81017" name="Да"/>
+        <node type="NONE" value="0" name="Нет"/>
+       </node>
+      </node>
+     </node>
+     <node type="AND" value="1300000" name="1">
+      <node type="OR" value="0" name="Двигатель">
+       <node type="AND" value="0" name="118i Urban">
+        <node type="OR" value="0" name="Мощность двигателя">
+         <node type="NONE" value="328950" name="136 л.с."/>
+         <node type="NONE" value="590635" name="177 л.с."/>
+        </node>
+       </node>
+       <node type="AND" value="0" name="118i Sport">
+        <node type="OR" value="0" name="Мощность двигателя">
+         <node type="NONE" value="340230" name="136 л.с."/>
+         <node type="NONE" value="606345" name="177 л.с."/>
+        </node>
+       </node>
+       <node type="NONE" value="1189250" name="M135i Drive (326 л.с.)"/>
+      </node>
+      <node type="OR" value="0" name="Пакеты">
+       <node type="NONE" value="0" name="Отсутствуют"/>
+       <node type="NONE" value="57960" name="Пакет услуг BMW ConnectedDrive"/>
+       <node type="NONE" value="45000" name="Пакет DriveComfort"/>
+       <node type="NONE" value="132514" name="M Спорт пакет"/>
+      </node>
+     </node>
+    </node>
+   </node>
+   <node type="AND" name="Audi">
+    <node type="model" name="Модель">
+     <node type="AND" value="3000000" name="Q7">
+      <node type="OR" value="0" name="Двигатель">
+       <node type="AND" value="0" name="Бензин">
+        <node type="OR" value="0" name="3.0 TFSI">
+         <node type="NONE" value="246000" name="272 л.с."/>
+         <node type="NONE" value="763000" name="333 л.с."/>
+        </node>
+       </node>
+       <node type="OR" value="0" name="Дизель">
+        <node type="NONE" value="288000" name="3.0 TDI (245 л.с.)"/>
+        <node type="NONE" value="1482000" name="4.2 TDI (340 л.с.)"/>
+       </node>
+      </node>
+      <node type="OR" value="0" name="Окраска кузова">
+       <node type="NONE" value="54000" name="Металлик"/>
+       <node type="NONE" value="54000" name="Перламутр"/>
+       <node type="NONE" value="188080" name="Индивидуальная окраска Audi exclusive"/>
+      </node>
+      <node type="OR" value="0" name="Колесные диски">
+       <node type="OR" value="0" name="18&quot;">
+        <node type="NONE" value="0" name="&quot;7 рукавов&quot; 7.5Jx18"/>
+        <node type="NONE" value="31280" name="&quot;6 рукавов&quot; 8Jx18"/>
+       </node>
+       <node type="OR" value="0" name="19&quot;">
+        <node type="NONE" value="62480" name="&quot;5 рукавов Structure&quot; 8Jx19"/>
+        <node type="NONE" value="73840" name="&quot;5 рукавов V&quot; 8.5Jx19"/>
+       </node>
+       <node type="OR" value="0" name="20&quot;">
+        <node type="NONE" value="152840" name="&quot;5 спиц&quot;  9Jx20"/>
+        <node type="NONE" value="124960" name="&quot;5 двойных спиц&quot;  9Jx20"/>
+        <node type="NONE" value="178400" name="&quot;20 спиц&quot;  10Jx20"/>
+       </node>
+       <node type="OR" value="0" name="21&quot;">
+        <node type="NONE" value="212480" name="&quot;5 сегментных спиц&quot;  10Jx21"/>
+        <node type="NONE" value="224124" name="&quot;5 рукавов Rotor&quot; 9Jx21"/>
+       </node>
+      </node>
+      <node type="OR" value="0" name="Аудио система">
+       <node type="NONE" value="4000" name="CD-плеер"/>
+       <node type="NONE" value="39200" name="MMI BOSE Surround Sound"/>
+       <node type="NONE" value="340800" name="MMI Bang &amp; Olufsen"/>
+      </node>
+     </node>
+     <node type="AND" value="2000000" name="Q5">
+      <node type="OR" value="0" name="Двигатель">
+       <node type="OR" value="0" name="Бензин">
+        <node type="NONE" value="300000" name="180 л.с."/>
+        <node type="NONE" value="410000" name="225 л.с."/>
+        <node type="NONE" value="750000" name="272 л.с."/>
+        <node type="OR" value="0" name="Comfort line">
+         <node type="NONE" value="412000" name="180 л.с."/>
+         <node type="NONE" value="522000" name="225 л.с."/>
+         <node type="NONE" value="862000" name="272 л.с."/>
+        </node>
+        <node type="OR" value="0" name="Sport line">
+         <node type="NONE" value="493500" name="180 л.с."/>
+         <node type="NONE" value="603500" name="225 л.с."/>
+         <node type="NONE" value="943500" name="272 л.с."/>
+        </node>
+       </node>
+       <node type="OR" value="0" name="Дизель">
+        <node type="NONE" value="422000" name="177 л.с."/>
+        <node type="NONE" value="1062000" name="245 л.с."/>
+       </node>
+       <node type="NONE" value="1350000" name="Hybrid 2.0 TFSI"/>
+      </node>
+      <node type="OR" value="0" name="Пакет внешней отделки">
+       <node type="NONE" value="0" name="Без отделки"/>
+       <node type="NONE" value="17040" name="Контрастная лакировка"/>
+       <node type="NONE" value="99440" name="Пакет внешей отделки S line"/>
+       <node type="NONE" value="32240" name="Черный стайлинг пакет Audi exclusive"/>
+       <node type="NONE" value="107920" name="Стайлинг пакет Offroad Audi exclusive"/>
+      </node>
+      <node type="OR" value="0" name="Климат">
+       <node type="NONE" value="10000" name="Климат-контроль"/>
+       <node type="NONE" value="35200" name="Трехзонный климат-контроль"/>
+       <node type="NONE" value="80740" name="Независимое охлаждение салона с ДУ"/>
+      </node>
+     </node>
+    </node>
+   </node>
+  </node>
+ </and-or-tree>
 </vehicle-model>

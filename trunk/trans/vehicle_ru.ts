@@ -253,80 +253,80 @@
         <translation>Vehicle</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="55"/>
+        <location filename="../gui/qml/main.qml" line="72"/>
         <source>Open configurations</source>
         <translation>Открыть конфигурации</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="70"/>
-        <location filename="../gui/qml/main.qml" line="116"/>
+        <location filename="../gui/qml/main.qml" line="87"/>
+        <location filename="../gui/qml/main.qml" line="133"/>
         <source>Please choose a file</source>
         <translation>Пожалуйста, выберите файл</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="71"/>
-        <location filename="../gui/qml/main.qml" line="117"/>
+        <location filename="../gui/qml/main.qml" line="88"/>
+        <location filename="../gui/qml/main.qml" line="134"/>
         <source>XML files (*.xml)</source>
         <translation>XML файлы (*.xml)</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="76"/>
-        <location filename="../gui/qml/main.qml" line="124"/>
+        <location filename="../gui/qml/main.qml" line="93"/>
+        <location filename="../gui/qml/main.qml" line="141"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="77"/>
+        <location filename="../gui/qml/main.qml" line="94"/>
         <source>Failed to load configurations</source>
         <translation>Не удается загрузить конфигурации</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="83"/>
+        <location filename="../gui/qml/main.qml" line="100"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="84"/>
+        <location filename="../gui/qml/main.qml" line="101"/>
         <source>Configurations you have loaded were based on outdated data. Now they may not be available. Please, consult the staff for more information</source>
         <translation>Загруженные конфигурации были созданы на основе устаревших данных. Сейчас данные комплектации могут отсутствовать. Пожалуйста, обратитесь за помощью к персоналу для получения более подробной информации</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="101"/>
+        <location filename="../gui/qml/main.qml" line="118"/>
         <source>Save configurations</source>
         <translation>Сохранить конфигурации</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="125"/>
+        <location filename="../gui/qml/main.qml" line="142"/>
         <source>Failed to save configurations</source>
         <translation>Не удается сохранить конфигурации</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="141"/>
+        <location filename="../gui/qml/main.qml" line="158"/>
         <source>Enter the data edit mode</source>
         <translation>Войти в режим редактирования данных</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="157"/>
+        <location filename="../gui/qml/main.qml" line="175"/>
         <source>Sort price descending</source>
         <translation>Сортировка цены по убыванию</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="165"/>
+        <location filename="../gui/qml/main.qml" line="183"/>
         <source>Sort price ascending</source>
         <translation>Сортировка цены по возрастанию</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="196"/>
+        <location filename="../gui/qml/main.qml" line="220"/>
         <source>PARAMETERS</source>
         <translation>ПАРАМЕТРЫ</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="235"/>
+        <location filename="../gui/qml/main.qml" line="259"/>
         <source>Back to the configurations</source>
         <translation>Вернуться к списку конфигураций</translation>
     </message>
     <message>
-        <location filename="../gui/qml/main.qml" line="262"/>
+        <location filename="../gui/qml/main.qml" line="298"/>
         <source>You are in the full screen mode (Press F11 for windowed mode)</source>
         <translation>Вы в полноэкранном режиме (нажмите F11 для перехода в оконный режим)</translation>
     </message>
@@ -437,30 +437,30 @@
 <context>
     <name>vehicle::middleware::SolutionModel</name>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="359"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="370"/>
         <source>Cannot save configuration: incorrect index %1</source>
         <translation>Не удается сохранить конфигурацию: некорректный индекс %1</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="366"/>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="417"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="377"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="428"/>
         <source>Configuration ID:</source>
         <translation>Идентификатор:</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="366"/>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="417"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="377"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="428"/>
         <source>Price:</source>
         <translation>Стоимость:</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="367"/>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="418"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="378"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="429"/>
         <source>Parameters:</source>
         <translation>Параметры:</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="403"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="414"/>
         <source>Cannot print configuration: incorrect index %1</source>
         <translation>Не удается вывести на печать конфигурацию: некорректный индекс %1</translation>
     </message>

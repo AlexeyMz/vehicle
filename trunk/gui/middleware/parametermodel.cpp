@@ -386,6 +386,9 @@ void ParameterModel::openEditMode()
         initialize();
         endResetModel();
     }
+	else
+		solutionModel_->restore();
+
     delete modalDialog;
 }
 

@@ -159,6 +159,7 @@ ApplicationWindow {
             onClicked: {
                 window.visibility = "Hidden";
                 if(bridge.login()) {
+					parameters.lock = false;
                     parameterModel.openEditMode();
                 }
                 window.visibility = visibilityControl.state
