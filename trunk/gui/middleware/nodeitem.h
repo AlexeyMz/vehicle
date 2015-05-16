@@ -57,7 +57,7 @@ Stream& operator<<(Stream& os, const NodeItem& value)
 }
 
 /// Тип И-ИЛИ дерева с ключом в виде десятичного числа с 2 знаками после запятой.
-typedef core::AndOrTree<dec::decimal2, NodeItem> AOTree;
+typedef core::AndOrTree<decimal2, NodeItem> AOTree;
 /// Тип итератора подходящих конфигураций
 typedef algorithm::SolutionIterator<typename AOTree::key_t, typename AOTree::value_t> solution_iterator;
 

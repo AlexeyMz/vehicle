@@ -86,7 +86,7 @@ AOTree* XmlParser::readMarks(QDomElement* andortree)
                     if(!tree)
                     {
                         tree = new AOTree;
-                        tree->setRoot(tree->create(NodeKind::OR, dec::decimal2(0), NodeItem(rootName.toStdString())));
+                        tree->setRoot(tree->create(NodeKind::OR, decimal2(0), NodeItem(rootName.toStdString())));
                     }
 
                     if(markElement.attribute("type").compare("AND", Qt::CaseInsensitive) != 0)
@@ -102,7 +102,7 @@ AOTree* XmlParser::readMarks(QDomElement* andortree)
                         break;
                     }
 
-                    AOTree::node_t* markNode = tree->create(NodeKind::AND, dec::decimal2(0), NodeItem(name.toStdString()));
+                    AOTree::node_t* markNode = tree->create(NodeKind::AND, decimal2(0), NodeItem(name.toStdString()));
                     tree->getRoot()->attach(markNode);
 
                     if(!readModelElement(&markElement, tree, markNode))
@@ -139,7 +139,7 @@ bool XmlParser::readModelElement(QDomElement* markElement, AOTree* tree, AOTree:
         QString modelName = modelElement.attribute("name");
         if(!modelName.isEmpty())
         {
-            AOTree::node_t* modelNode = tree->create(NodeKind::OR, dec::decimal2(0), NodeItem(modelName.toStdString()));
+            AOTree::node_t* modelNode = tree->create(NodeKind::OR, decimal2(0), NodeItem(modelName.toStdString()));
             markNode->attach(modelNode);
 
             QDomElement specificModelElement = modelElement.firstChildElement("node");
@@ -162,7 +162,7 @@ bool XmlParser::readModelElement(QDomElement* markElement, AOTree* tree, AOTree:
                 if(!valueStr.isEmpty())
                     value = valueStr.toInt();
 
-                AOTree::node_t* specificModelNode = tree->create(kind, dec::decimal2(value), NodeItem(name.toStdString()));
+                AOTree::node_t* specificModelNode = tree->create(kind, decimal2(value), NodeItem(name.toStdString()));
                 modelNode->attach(specificModelNode);
 
                 if(kind != NodeKind::NONE)
@@ -210,7 +210,7 @@ bool XmlParser::readChildren(QDomElement* element, AOTree* tree, AOTree::node_t*
         if(!valueStr.isEmpty())
             value = valueStr.toInt();
 
-        AOTree::node_t* nodeChild = tree->create(kind, dec::decimal2(value), NodeItem(name.toStdString()));
+        AOTree::node_t* nodeChild = tree->create(kind, decimal2(value), NodeItem(name.toStdString()));
         parent->attach(nodeChild);
 
         if(kind != NodeKind::NONE)
@@ -427,7 +427,7 @@ SolutionModel* XmlParser::loadSolutions(const QString& fileName, bool* isOutdate
 
                         solution = solution.nextSiblingElement("solution");
 
-                        internal::SolutionInitializer data = { fullDescr, shortDescr, dec::decimal2(price), hash.toLocal8Bit(), model, mark };
+                        internal::SolutionInitializer data = { fullDescr, shortDescr, decimal2(price), hash.toLocal8Bit(), model, mark };
                         Solution* s = new Solution(qMove(data));
                         solutionModel->addSolution(s);
                     }

@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <QtCore/QAbstractListModel>
+#include <QtCore/QFutureWatcher>
+
 #include "nodeitem.h"
 
 namespace vehicle {
@@ -224,7 +226,21 @@ public slots:
     ///
     void setParameterValue(const QString& name, const QString& value);
 
+signals:
+	///
+	/// \brief Данный сигнал отправляется при вызове функции \fn setParameterValue()
+	/// перед построением новой модели решений. Сигнал обрабатывается в QML
+	///
+	void parameterSetStarted();
+	///
+	/// \brief Данный сигнал отправляется при вызове функции \fn setParameterValue()
+	/// после построения новой модели решений. Сигнал обрабатывается в QML
+	///
+	void parameterSetFinished();
+
 private slots:
+	SolutionModel* startUpdateSolutionModel();
+	void endUpdateSolutionModel();
     void treeChanged();
 
 protected:
@@ -240,6 +256,7 @@ private:
     QVector<Parameter*> actualParams_;
     QVector<Parameter*> model_;
 
+	QFutureWatcher<SolutionModel*> paramSet_;
     QHash<int,QByteArray> roles_;
     AOTree* tree_;
     int nameSize_;

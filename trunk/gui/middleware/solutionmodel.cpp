@@ -4,6 +4,7 @@
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
 
+#include <QtConcurrent/QtConcurrentRun>
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QGuiApplication>
 #include <QtGui/QTextDocument>
@@ -101,7 +102,9 @@ SolutionModel* SolutionModel::create(solution_iterator solutions, QObject* paren
     {
         do {
             Solution* solution = new Solution(solutions.currentSolution());
-            model->addSolution(solution);
+			//Q_ASSERT(!model->solutionsHash_.contains(solution->hash()));
+			model->solutionsHash_[solution->hash()] = solution;
+			model->solutions_.push_back(solution);
         } while(solutions.nextSolution());
     }
     return model;
@@ -109,6 +112,10 @@ SolutionModel* SolutionModel::create(solution_iterator solutions, QObject* paren
 
 SolutionModel::SolutionModel(QObject* parent) : QAbstractListModel(parent), sortOrder_(-1), tempModel_(nullptr), tempMode_(false), outdated_(false)
 {
+	connect(&sorting_, SIGNAL(started()), SIGNAL(sortingStarted()));
+	connect(&sorting_, SIGNAL(finished()), SLOT(endSorting()));
+	connect(&sorting_, SIGNAL(finished()), SIGNAL(sortingFinished()));
+
     roles_[ShortDescriptionRole] = "ShortDescription";
     roles_[FullDescriptionRole] = "FullDescription";
     roles_[PriceRole] = "Price";
@@ -119,6 +126,7 @@ SolutionModel::SolutionModel(QObject* parent) : QAbstractListModel(parent), sort
 
 SolutionModel::~SolutionModel()
 {
+	sorting_.waitForFinished();
     clear();
 }
 
@@ -164,51 +172,56 @@ int SolutionModel::rowCount(const QModelIndex& parent) const
 
 void SolutionModel::sort(int column, Qt::SortOrder order)
 {
+	sorting_.waitForFinished();
+
     if(tempMode_)
     {
         tempModel_->sort(column, order);
         return;
     }
 
-    if(column == 0 && sortOrder_ != order)
-    {
-        // Значит сортировка уже производилась и необходимо инвертировать массив
-        if(sortOrder_ != -1)
-        {
-            beginResetModel();
-            std::reverse(solutions_.begin(), solutions_.end());
-            endResetModel();
-        }
-        else
-        {
-            // Пузырёк
-            for(int i = 0; i < solutions_.size() - 1; ++i)
-                for(int j = 0; j < solutions_.size() - i - 1; ++j)
-                    if(order == Qt::AscendingOrder)
+	if(column == 0 && sortOrder_ != order)
+		sorting_.setFuture(QtConcurrent::run(this, &SolutionModel::startSorting, column, order));
+}
+
+void SolutionModel::startSorting(int column, Qt::SortOrder order)
+{
+	// Значит сортировка уже производилась и необходимо инвертировать массив
+    if(sortOrder_ != -1)
+		std::reverse(solutions_.begin(), solutions_.end());
+	else
+	{
+		// Пузырёк
+		for(int i = 0; i < solutions_.size() - 1; ++i)
+			for(int j = 0; j < solutions_.size() - i - 1; ++j)
+				if(order == Qt::AscendingOrder)
+				{
+                    if(solutions_[j]->price() > solutions_[j + 1]->price())
                     {
-                        if(solutions_[j]->price() > solutions_[j + 1]->price())
-                        {
-                            beginMoveRows(QModelIndex(), j, j, QModelIndex(), j + 2);
-                            Solution* tmp = solutions_[j];
-                            solutions_.replace(j, solutions_[j + 1]);
-                            solutions_.replace(j + 1, tmp);
-                            endMoveRows();
-                        }
+                        beginMoveRows(QModelIndex(), j, j, QModelIndex(), j + 2);
+                        Solution* tmp = solutions_[j];
+                        solutions_.replace(j, solutions_[j + 1]);
+                        solutions_.replace(j + 1, tmp);
                     }
-                    else
+                }
+                else
+                {
+                    if(solutions_[j]->price() < solutions_[j + 1]->price())
                     {
-                        if(solutions_[j]->price() < solutions_[j + 1]->price())
-                        {
-                            beginMoveRows(QModelIndex(), j, j, QModelIndex(), j + 2);
-                            Solution* tmp = solutions_[j];
-                            solutions_.replace(j, solutions_[j + 1]);
-                            solutions_.replace(j + 1, tmp);
-                            endMoveRows();
-                        }
+                        Solution* tmp = solutions_[j];
+                        solutions_.replace(j, solutions_[j + 1]);
+                        solutions_.replace(j + 1, tmp);
                     }
-        }
-        sortOrder_ = order;
-    }
+                }
+	}
+	
+	sortOrder_ = order;
+}
+
+void SolutionModel::endSorting()
+{
+	beginResetModel();
+	endResetModel();
 }
 
 QVariant SolutionModel::data(const QModelIndex& index, int role) const
@@ -242,7 +255,7 @@ QVariant SolutionModel::data(const QModelIndex& index, int role) const
 void SolutionModel::addSolution(Solution* solution)
 {
     Q_ASSERT(!tempMode_);
-    Q_ASSERT(!solutionsHash_.contains(solution->hash()));
+    //Q_ASSERT(!solutionsHash_.contains(solution->hash()));
 
     if(sortOrder_ != -1)
     {

@@ -26,7 +26,6 @@ void TreeView::setModel(QAbstractItemModel* model)
 {
 	connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(resizeToContents()));
 	connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(resizeToContents()));
-	connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(resizeToContents()));
 	QTreeView::setModel(model);
 }
 

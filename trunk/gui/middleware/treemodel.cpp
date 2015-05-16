@@ -70,13 +70,13 @@ bool TreeItem::insertChildren(int position, int count)
     {
         if(kind() == NodeKind::NONE)
             setKind(NodeKind::AND);
-        else if(kind() == NodeKind::AND)
+		else if(kind() == NodeKind::AND && children_.count() < 2)
             setKind(NodeKind::OR);
     }
 
     for(int row = 0; row < count; ++row)
     {
-        AOTree::node_t* nodeChild = tree_->create(NodeKind::NONE, dec::decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
+        AOTree::node_t* nodeChild = tree_->create(NodeKind::NONE, decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
         TreeItem* itemChild = new TreeItem(tree_, nodeChild, this);
         node_->attach(nodeChild);
 
@@ -85,13 +85,13 @@ bool TreeItem::insertChildren(int position, int count)
         // Марке автоматически добавляем узел модели и модель
         if(isMarkNode)
         {
-            AOTree::node_t* modelNode = tree_->create(NodeKind::OR, dec::decimal2(0), NodeItem(QObject::tr("Model").toStdString()));
+            AOTree::node_t* modelNode = tree_->create(NodeKind::OR, decimal2(0), NodeItem(QObject::tr("Model").toStdString()));
             TreeItem* modelNodeItem = new TreeItem(tree_, modelNode, itemChild);
             itemChild->children_.push_back(modelNodeItem);
             nodeChild->setKind(NodeKind::AND);
             nodeChild->attach(modelNode);
 
-            AOTree::node_t* model = tree_->create(NodeKind::AND, dec::decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
+            AOTree::node_t* model = tree_->create(NodeKind::NONE, decimal2(0), NodeItem(QObject::tr("Name").toStdString()));
             TreeItem* modelItem = new TreeItem(tree_, model, modelNodeItem);
             modelNodeItem->children_.push_back(modelItem);
             modelNode->attach(model);
@@ -171,7 +171,7 @@ bool TreeItem::setData(int column, const QVariant& value)
         int price = value.toInt(&ok);
         if(ok && price >= 0)
         {
-            node_->setOwnKey(dec::decimal2(price));
+            node_->setOwnKey(decimal2(price));
             return true;
         }
         else

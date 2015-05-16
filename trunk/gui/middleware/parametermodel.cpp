@@ -8,10 +8,12 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLabel>
 
+#include <QtConcurrent/QtConcurrentRun>
 #include <QtGui/QFontMetrics>
 
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QSettings>
+#include <QtCore/QTime>
 
 #include "../utils/xmlparser.h"
 
@@ -117,6 +119,10 @@ QString Parameter::value() const
 ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListModel(parent), solutionModel_(0), treeModel_(0), changed_(false), tree_(tree), nameSize_(-1)
 {
     Q_ASSERT(tree_);
+	connect(&paramSet_, SIGNAL(started()), SIGNAL(parameterSetStarted()));
+	connect(&paramSet_, SIGNAL(finished()), SLOT(endUpdateSolutionModel()));
+	connect(&paramSet_, SIGNAL(finished()), SIGNAL(parameterSetFinished()));
+
     initialize();
 
     roles_[ParameterRole] = "Parameter";
@@ -129,6 +135,7 @@ ParameterModel::ParameterModel(AOTree* tree, QObject* parent) : QAbstractListMod
 
 ParameterModel::~ParameterModel()
 {
+	paramSet_.waitForFinished();
     delete solutionModel_;
     delete tree_;
     clear();
@@ -288,6 +295,8 @@ int ParameterModel::parametersCount() const
 
 void ParameterModel::setParameterValue(const QString& name, const QString& value)
 {
+	paramSet_.waitForFinished();
+
     Parameter* parameter = nullptr;
     for(Parameter* p : actualParams_)
         if(p->name() == name)
@@ -299,10 +308,19 @@ void ParameterModel::setParameterValue(const QString& name, const QString& value
     Q_ASSERT(parameter != nullptr);
     parameter->chooseValue(value);
 
-    solution_iterator it(*tree_);
-    SolutionModel* tmp = SolutionModel::create(it, this);
-    solutionModel_->recomputeToFit(tmp);
-    delete tmp;
+	paramSet_.setFuture(QtConcurrent::run(this, &ParameterModel::startUpdateSolutionModel));
+}
+
+SolutionModel* ParameterModel::startUpdateSolutionModel()
+{
+	solution_iterator it(*tree_);
+    return SolutionModel::create(it);
+}
+
+void ParameterModel::endUpdateSolutionModel()
+{
+	solutionModel_->recomputeToFit(paramSet_.result());
+    delete paramSet_.result();
 }
 
 SolutionModel* ParameterModel::solutionModel() const

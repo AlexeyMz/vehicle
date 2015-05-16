@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <QtCore/QAbstractListModel>
+#include <QtCore/QFutureWatcher>
 #include <QtCore/QUrl>
 
 #include "nodeitem.h"
@@ -217,6 +218,22 @@ public:
     ///
     Q_INVOKABLE void restore();
 
+signals:
+	///
+	/// \brief Данный сигнал отправляется при вызове функции \fn sort()
+	/// перед выполнением сортировки. Сигнал обрабатывается в QML
+	///
+	void sortingStarted();
+	///
+	/// \brief Данный сигнал отправляется при вызове функции \fn sort()
+	/// после выполнения сортировки. Сигнал обрабатывается в QML
+	///
+	void sortingFinished();
+
+private slots:
+	void startSorting(int column, Qt::SortOrder order);
+	void endSorting();
+
 protected:
     QHash<int,QByteArray> roleNames() const;
 
@@ -226,6 +243,7 @@ private:
     bool tempMode_;
 
     QHash<QString,Solution*> solutionsHash_;
+	QFutureWatcher<void> sorting_;
     QVector<Solution*> solutions_;
     QHash<int,QByteArray> roles_;
     int sortOrder_;

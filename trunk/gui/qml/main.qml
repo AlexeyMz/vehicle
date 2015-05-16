@@ -26,8 +26,25 @@ ApplicationWindow {
         source: "../images/background.png"
     }
 
+	Rectangle {
+		id: busyIndicator
+		property alias running: __indicator.running
+
+		anchors.fill: parent
+		visible: running
+		color: "white"
+		opacity: 0.5
+
+		BusyIndicator {
+			id: __indicator
+			running: false
+			anchors.centerIn: parent
+		}
+	}
+
     Item {
         id: menu
+		enabled: !busyIndicator.running
 
         property int iconSize: 64
         property int spacing: 10
@@ -85,7 +102,7 @@ ApplicationWindow {
                             messageDialog.icon = StandardIcon.Warning;
                             messageDialog.open();
                         }
-                        parameters.enabled = false;
+                        parameters.lock = true;
                     }
                 }
                 Component.onCompleted: close()
@@ -170,6 +187,8 @@ ApplicationWindow {
 
     SolutionsView {
         id: solutions
+		enabled: !busyIndicator.running
+
         anchors.left: windowAnchors.left
         anchors.top: menu.bottom
         anchors.bottom: windowAnchors.bottom
@@ -187,6 +206,10 @@ ApplicationWindow {
 
     GroupBox {
         id: parameters
+		enabled: !busyIndicator.running && !lock
+
+		property bool lock: false
+
         anchors.right: windowAnchors.right
         anchors.bottom: windowAnchors.bottom
         anchors.top: windowAnchors.top
@@ -208,7 +231,7 @@ ApplicationWindow {
     Rectangle {
         id: parametersLock
         anchors.fill: parameters
-        visible: !parameters.enabled
+        visible: parameters.lock
         gradient: solutions.delegateGradient
         opacity: 0.2
     }
@@ -222,7 +245,7 @@ ApplicationWindow {
 
         onClicked: {
             solutionModel.restore();
-            parameters.enabled = true;
+            parameters.lock = false;
         }
     }
 
@@ -236,6 +259,18 @@ ApplicationWindow {
         height: 60
         font.pixelSize: 18
     }
+
+	Connections {
+		target: parameterModel
+		onParameterSetStarted: busyIndicator.running = true
+		onParameterSetFinished: busyIndicator.running = false
+	}
+
+	Connections {
+		target: solutionModel
+		onSortingStarted: busyIndicator.running = true
+		onSortingFinished: busyIndicator.running = false
+	}
 
     Rectangle {
         id: fullScreenHelp

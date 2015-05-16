@@ -74,8 +74,8 @@
 
 // <--
 
-namespace dec
-{
+//namespace dec
+//{
 
 // ----------------------------------------------------------------------------
 // Simple type definitions
@@ -695,5 +695,5 @@ T fromString (const std::string &str) {
     return t;
 }
 
-} // namespace
+//} // namespace
 #endif // _DECIMAL_H__

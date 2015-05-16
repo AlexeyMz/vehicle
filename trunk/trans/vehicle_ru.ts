@@ -372,15 +372,15 @@
 <context>
     <name>vehicle::middleware::Parameter</name>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="81"/>
-        <location filename="../gui/middleware/parametermodel.cpp" line="99"/>
-        <location filename="../gui/middleware/parametermodel.cpp" line="108"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="83"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="101"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="110"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="99"/>
-        <location filename="../gui/middleware/parametermodel.cpp" line="108"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="101"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="110"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
@@ -388,48 +388,48 @@
 <context>
     <name>vehicle::middleware::ParameterModel</name>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="318"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="336"/>
         <source>The data edit mode</source>
         <translation>Режим редактирования данных</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="330"/>
-        <location filename="../gui/middleware/parametermodel.cpp" line="334"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="348"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="352"/>
         <source>Change password</source>
         <translation>Изменить пароль</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="334"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="352"/>
         <source>Input new password</source>
         <translation>Введите новый пароль</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="339"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="357"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="339"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="357"/>
         <source>You have entered an empty password!</source>
         <translation>Вы ввели пустой пароль!</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="349"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="367"/>
         <source>AND nodes</source>
         <translation>И-узлы</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="349"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="367"/>
         <source>OR nodes</source>
         <translation>ИЛИ-узлы</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="364"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="382"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/parametermodel.cpp" line="364"/>
+        <location filename="../gui/middleware/parametermodel.cpp" line="382"/>
         <source>Failed to save data</source>
         <translation>Не удалось сохранить данные</translation>
     </message>
@@ -437,30 +437,30 @@
 <context>
     <name>vehicle::middleware::SolutionModel</name>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="357"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="359"/>
         <source>Cannot save configuration: incorrect index %1</source>
         <translation>Не удается сохранить конфигурацию: некорректный индекс %1</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="364"/>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="415"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="366"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="417"/>
         <source>Configuration ID:</source>
         <translation>Идентификатор:</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="364"/>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="415"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="366"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="417"/>
         <source>Price:</source>
         <translation>Стоимость:</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="365"/>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="416"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="367"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="418"/>
         <source>Parameters:</source>
         <translation>Параметры:</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/solutionmodel.cpp" line="401"/>
+        <location filename="../gui/middleware/solutionmodel.cpp" line="403"/>
         <source>Cannot print configuration: incorrect index %1</source>
         <translation>Не удается вывести на печать конфигурацию: некорректный индекс %1</translation>
     </message>
@@ -468,33 +468,33 @@
 <context>
     <name>vehicle::middleware::TreeView</name>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="59"/>
-        <location filename="../gui/middleware/treeview.cpp" line="72"/>
+        <location filename="../gui/middleware/treeview.cpp" line="58"/>
+        <location filename="../gui/middleware/treeview.cpp" line="71"/>
         <source>Change the node kind</source>
         <translation>Изменить тип узла</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="63"/>
+        <location filename="../gui/middleware/treeview.cpp" line="62"/>
         <source>AND</source>
         <translation>И</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="63"/>
+        <location filename="../gui/middleware/treeview.cpp" line="62"/>
         <source>OR</source>
         <translation>ИЛИ</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="72"/>
+        <location filename="../gui/middleware/treeview.cpp" line="71"/>
         <source>Choose the node kind</source>
         <translation>Выберите тип узла</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="90"/>
+        <location filename="../gui/middleware/treeview.cpp" line="89"/>
         <source>Add child node</source>
         <translation>Добавить дочерний узел</translation>
     </message>
     <message>
-        <location filename="../gui/middleware/treeview.cpp" line="97"/>
+        <location filename="../gui/middleware/treeview.cpp" line="96"/>
         <source>Remove node</source>
         <translation>Удалить узел</translation>
     </message>
