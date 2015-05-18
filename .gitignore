@@ -1,0 +1,8 @@
+/Debug
+/Release
+/trunk/temp
+*.sdf
+*.opensdf
+*.suo
+*.vcxproj.user
+/modeltest/x64

@@ -262,11 +262,24 @@ namespace vehicle {
         }
 
         namespace design {
+			template <typename Space>
+			class IndentManip {
+			public:
+				IndentManip(const Space &space, size_t size):
+					space(space), size(size) {}
+			
+				const Space &space;
+				const size_t size;
+			};
+			template <typename Stream, typename Space>
+			Stream & operator<<(Stream &os, const IndentManip<Space> &m) {
+				for (size_t i = 0; i < m.size; i++) { os << m.space; }
+                return os;
+			}
             /** Выводит в поток stream подряд элементы space в количестве size. */
-            template <typename Stream, typename Space>
-            Stream & indent(Stream &stream, const Space &space, size_t size) {
-                for (size_t i = 0; i < size; i++) { stream << space; }
-                return stream;
+            template <typename Space>
+			IndentManip<Space> indent(const Space &space, size_t size) {
+				return IndentManip<Space>(space, size);
             }
             /**
              * Выводит в поток stream необходимое количество закрывающих
@@ -284,13 +297,13 @@ namespace vehicle {
             {
                 if (deepLevel <= shallowLevel) { return stream; }
                 for (size_t i = deepLevel - 1; i >= shallowLevel && i-- != 0;) {
-                    indent(stream, space, i) << closing;
+                    stream << indent(space, i) << closing;
                 }
                 return stream;
             }
             template <typename Stream, typename Key, typename Value>
             Stream & printNode(Stream &stream, const Node<Key, Value> &node, size_t level) {
-                indent(stream, "  ", level) << node.ownKey();
+                stream << indent("  ", level) << node.ownKey();
                 if (!node.isLeaf()) {
                     stream << " (" << node.subtreeKey() << ")";
                 }
